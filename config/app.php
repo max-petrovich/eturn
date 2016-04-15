@@ -158,6 +158,8 @@ return [
 
         Barryvdh\Debugbar\ServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Spatie\Fractal\FractalServiceProvider::class, // API
+        Collective\Html\HtmlServiceProvider::class,
 
     ],
 
@@ -206,6 +208,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Fractal' => Spatie\Fractal\FractalFacade::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
 
     ],
 

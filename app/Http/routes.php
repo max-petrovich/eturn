@@ -13,8 +13,11 @@
 
 /* Client part */
 
+use App\Models\ClosedDay;
+
 Route::get('/', function () {
     return view('welcome');
+//    return ClosedDay::all();
 });
 
 /* Admin part */
