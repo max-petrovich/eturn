@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderAdditionalService extends Model
 {
-    //
+    public function order()
+    {
+        return $this->belongsTo('App\Models\Order');
+    }
+
+    public function additionalService()
+    {
+        return $this->belongsTo('App\Models\AdditionalService');
+    }
+
 }

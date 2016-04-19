@@ -6,11 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DatabaseCreateModelsTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
     use DatabaseTransactions;
 
     public function testCreateUsers()
@@ -63,26 +59,14 @@ class DatabaseCreateModelsTest extends TestCase
 
     public function testCreateOrderAdditionalServices()
     {
-        factory(App\Models\HiddenOrderMonitoring::class, 5)
-            ->create();
-    }
-
-    public function testCreateMasterServices()
-    {
-        factory(App\Models\MasterServices::class, 2)
-            ->create();
-    }
-
-    public function testCreateMasterAdditionalServices()
-    {
-        factory(App\Models\MasterAdditionalService::class, 2)
+        factory(App\Models\OrderAdditionalService::class, 5)
             ->create();
     }
 
     public function testCreateMasterSchedule()
     {
         $user = factory(App\Models\User::class)->create();
-        factory(App\Models\MasterSchedule::class, 7)
+        factory(App\Models\UserSchedule::class, 7)
             ->create([
                 'user_id' => $user->id
             ]);
@@ -90,7 +74,7 @@ class DatabaseCreateModelsTest extends TestCase
 
     public function testCreateMasterScheduleExceptions()
     {
-        factory(App\Models\MasterScheduleException::class, 7)
+        factory(App\Models\UserScheduleException::class, 7)
             ->create();
     }
 

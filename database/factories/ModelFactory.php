@@ -102,33 +102,7 @@ $factory->define(App\Models\PaymentType::class, function (Faker\Generator $faker
     ];
 });
 
-$factory->define(App\Models\MasterServices::class, function (Faker\Generator $faker) {
-    return [
-        'user_id' => function() {
-            return factory(App\Models\User::class)->create()->id;
-        },
-        'service_id' => function() {
-            return factory(App\Models\Service::class)->create()->id;
-        },
-        'price' => $faker->numberBetween(100,1000000000),
-        'duration' => $faker->numberBetween(30,360)
-    ];
-});
-
-$factory->define(App\Models\MasterAdditionalService::class, function (Faker\Generator $faker) {
-    return [
-        'user_id' => function() {
-            return factory(App\Models\User::class)->create()->id;
-        },
-        'additional_service_id' => function() {
-            return factory(App\Models\AdditionalService::class)->create()->id;
-        },
-        'price' => $faker->numberBetween(100,1000000000),
-        'duration' => $faker->numberBetween(30,360)
-    ];
-});
-
-$factory->define(App\Models\MasterSchedule::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\UserSchedule::class, function (Faker\Generator $faker) {
     return [
         'user_id' => function() {
             return factory(App\Models\User::class)->create()->id;
@@ -139,7 +113,7 @@ $factory->define(App\Models\MasterSchedule::class, function (Faker\Generator $fa
     ];
 });
 
-$factory->define(App\Models\MasterScheduleException::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\UserScheduleException::class, function (Faker\Generator $faker) {
     return [
         'user_id' => function() {
             return factory(App\Models\User::class)->create()->id;
