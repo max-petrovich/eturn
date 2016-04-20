@@ -12,4 +12,9 @@ class Service extends Model
             ->withPivot(['price', 'duration'])
             ->withTimestamps();
     }
+
+    public function additionalServices()
+    {
+        return $this->hasMany('App\Models\AdditionalService');
+    }
 }

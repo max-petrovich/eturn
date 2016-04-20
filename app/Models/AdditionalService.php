@@ -18,4 +18,10 @@ class AdditionalService extends Model
     {
         return $this->belongsTo('App\Models\Service');
     }
+
+    public function order()
+    {
+        return $this->belongsToMany('App\Models\Order')
+            ->withTimestamps();
+    }
 }

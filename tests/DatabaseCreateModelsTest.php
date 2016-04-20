@@ -57,12 +57,6 @@ class DatabaseCreateModelsTest extends TestCase
             ->create();
     }
 
-    public function testCreateOrderAdditionalServices()
-    {
-        factory(App\Models\OrderAdditionalService::class, 5)
-            ->create();
-    }
-
     public function testCreateMasterSchedule()
     {
         $user = factory(App\Models\User::class)->create();

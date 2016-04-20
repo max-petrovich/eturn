@@ -109,24 +109,6 @@ class DatabaseTestModelRelations extends TestCase
         $this->assertEquals($user->id, $masterScheduleException->user->id);
     }
 
-    public function testOrderAdditionalService()
-    {
-        $order = factory(App\Models\Order::class)
-            ->create();
-
-        $additionalService = factory(App\Models\AdditionalService::class)
-            ->create();
-
-        $orderAdditionalService = factory(App\Models\OrderAdditionalService::class)
-            ->create([
-                'order_id' => $order->id,
-                'additional_service_id' => $additionalService->id
-            ]);
-
-        $this->assertEquals($order->id, $orderAdditionalService->order->id);
-        $this->assertEquals($additionalService->id, $orderAdditionalService->additionalService->id);
-    }
-
     /**
      * Test user with services, additional services
      */

@@ -3,9 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
+    use SoftDeletes;
+
+    protected $fillable = ['client_name', 'client_phone'];
+
+    protected $dates = ['deleted_at'];
 
     public function client()
     {
@@ -20,6 +26,12 @@ class Order extends Model
     public function service()
     {
         return $this->belongsTo('App\Models\Service');
+    }
+
+    public function additionalServices()
+    {
+        return $this->belongsToMany('App\Models\AdditionalService')
+            ->withTimestamps();
     }
 
     public function paymentType()

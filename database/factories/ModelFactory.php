@@ -85,17 +85,6 @@ $factory->define(App\Models\HiddenOrderMonitoring::class, function (Faker\Genera
     ];
 });
 
-$factory->define(App\Models\OrderAdditionalService::class, function (Faker\Generator $faker) {
-    return [
-        'order_id' => function() {
-            return factory(App\Models\Order::class)->create()->id;
-        },
-        'additional_service_id' => function() {
-            return factory(App\Models\AdditionalService::class)->create()->id;
-        }
-    ];
-});
-
 $factory->define(App\Models\PaymentType::class, function (Faker\Generator $faker) {
     return [
         'title' => $faker->unique()->name
