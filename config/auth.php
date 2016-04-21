@@ -65,9 +65,14 @@ return [
     */
 
     'providers' => [
-        'users' => [
+/*        'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],*/
+
+        'users' => [
+            'driver' => 'dleauth',
+            'model' => Maxic\DleAuth\User::class,
         ],
 
         // 'users' => [

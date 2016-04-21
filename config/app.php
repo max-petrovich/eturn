@@ -161,6 +161,8 @@ return [
         Spatie\Fractal\FractalServiceProvider::class, // API
         Collective\Html\HtmlServiceProvider::class,
 
+        Maxic\DleAuth\DleAuthServiceProvider::class,
+
     ],
 
     /*

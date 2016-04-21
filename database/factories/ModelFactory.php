@@ -20,6 +20,15 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(Maxic\DleAuth\User::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'email' => $faker->safeEmail,
+        'password' => md5(md5('123456')),
+        'remember_token' => str_random(10),
+    ];
+});
+
 $factory->define(App\Models\Service::class, function (Faker\Generator $faker) {
     return [
         'title' => $faker->unique()->name,

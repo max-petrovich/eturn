@@ -13,12 +13,12 @@
 
 /* Client part */
 
-use App\Models\ClosedDay;
 
 Route::get('/', function () {
     return view('welcome');
-//    return ClosedDay::all();
 });
+
+Route::get('/home', 'HomeController@index');
 
 /* Admin part */
 
@@ -32,3 +32,4 @@ Route::group(['prefix' => 'api/v1'], function () {
 });
 
 /* API*/
+Route::auth();
