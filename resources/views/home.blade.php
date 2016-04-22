@@ -9,6 +9,9 @@
 
                 <div class="panel-body">
                     You are logged in!
+                    @if( Auth::user()->isAdmin() )
+                        You are an admin! Wow!
+                    @endif
                 </div>
             </div>
         </div>

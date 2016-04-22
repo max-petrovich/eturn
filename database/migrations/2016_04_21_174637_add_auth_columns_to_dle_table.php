@@ -19,6 +19,7 @@ class AddAuthColumnsToDleTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        DB::statement('ALTER TABLE dle_users ENGINE = InnoDB');
     }
 
     /**
@@ -35,5 +36,6 @@ class AddAuthColumnsToDleTable extends Migration
             $table->dropRememberToken();
             $table->dropTimestamps();
         });
+        DB::statement('ALTER TABLE dle_users ENGINE = MyISAM');
     }
 }

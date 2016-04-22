@@ -24,7 +24,7 @@ $factory->define(Maxic\DleAuth\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->safeEmail,
-        'password' => md5(md5('123456')),
+        'password' => Maxic\DleAuth\DleCrypt::crypt(123456),
         'remember_token' => str_random(10),
     ];
 });

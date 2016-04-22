@@ -72,7 +72,7 @@ return [
 
         'users' => [
             'driver' => 'dleauth',
-            'model' => Maxic\DleAuth\User::class,
+            'model' => App\Models\User::class,
         ],
 
         // 'users' => [

@@ -25,17 +25,20 @@ class AuthTest extends TestCase
 
     public function testAuthSuccess()
     {
+        $userPassword = 123456;
 
         $user = factory(Maxic\DleAuth\User::class)
-            ->create();
+            ->create([
+                'password' => Maxic\DleAuth\DleCrypt::crypt($userPassword)
+            ]);
 
         $this->visit('/login')
             ->submitForm('Login', [
                 'email' => $user->email,
-                'password' => 123456
+                'password' => $userPassword
             ])
             ->dontSee(trans('auth.failed'))
-            ->see('Your Application\'s Landing Page.');
+            ->see($user->name);
         
     }
 }

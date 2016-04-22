@@ -5,8 +5,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
 
-    protected $table = 'dle_users';
-
     protected $primaryKey = 'user_id';
     /**
      * The attributes that are mass assignable.
@@ -25,18 +23,26 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    public function services()
+    
+    public function __construct()
     {
-        return $this->belongsToMany('App\Models\Service')
-            ->withPivot(['price', 'duration'])
-            ->withTimestamps();
+        parent::__construct();
+        $this->table = config('dleconfig.prefix') . '_users';
     }
 
-    public function additionalServices()
+    public function isAdmin()
     {
-        return $this->belongsToMany('App\Models\AdditionalService')
-            ->withPivot(['price', 'duration'])
-            ->withTimestamps();
+        return in_array($this->user_group, (array)config('dleconfig.roles_user.admin'));
     }
+
+    public function isMaster()
+    {
+        return in_array($this->user_group, (array)config('dleconfig.roles_user.master'));
+    }
+
+    public function isClient()
+    {
+        return !$this->isMaster();
+    }
+
 }
