@@ -23,11 +23,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
-    public function __construct()
+
+    public function getIdAttribute()
     {
-        parent::__construct();
-        $this->table = config('dleconfig.prefix') . '_users';
+        return $this->attributes['user_id'];
     }
 
     public function isAdmin()

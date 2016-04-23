@@ -12,14 +12,15 @@ class AddAuthColumnsToDleTable extends Migration
      */
     public function up()
     {
-        Schema::table('dle_users', function (Blueprint $table) {
+        Schema::connection(config('dleconfig.database_connection', config('database.default')))->table('dle_users', function (Blueprint $table) {
             $table->string('email', 255)->change();
             $table->string('password', 255)->change();
             $table->string('name', 255)->change();
             $table->rememberToken();
             $table->timestamps();
         });
-        DB::statement('ALTER TABLE dle_users ENGINE = InnoDB');
+
+        DB::connection(config('dleconfig.database_connection', config('database.default')))->statement('ALTER TABLE '. config('dleconfig.prefix') .'users ENGINE = InnoDB');
     }
 
     /**
@@ -29,13 +30,14 @@ class AddAuthColumnsToDleTable extends Migration
      */
     public function down()
     {
-        Schema::table('dle_users', function (Blueprint $table) {
+        Schema::connection(config('dleconfig.database_connection', config('database.default')))->table('dle_users', function (Blueprint $table) {
             $table->string('email', 50)->change();
             $table->string('password', 32)->change();
             $table->string('name', 40)->change();
             $table->dropRememberToken();
             $table->dropTimestamps();
         });
-        DB::statement('ALTER TABLE dle_users ENGINE = MyISAM');
+
+        DB::connection(config('dleconfig.database_connection', config('database.default')))->statement('ALTER TABLE '. config('dleconfig.prefix') .'users ENGINE = MyISAM');
     }
 }

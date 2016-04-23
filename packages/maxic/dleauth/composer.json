@@ -1,0 +1,17 @@
+{
+  "name": "maxic/laravel-dle-auth-driver",
+  "description": "Laravel-DLE CMS auth driver",
+  "keywords": ["dle", "laravel", "auth", "driver"],
+  "authors": [
+    {
+      "name": "Pádraic Brady",
+      "email": "petrovich.m.y@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.2"
+  },
+  "autoload": {
+    "psr-4": { "Maxic\\DleAuth": "src/" }
+  }
+}

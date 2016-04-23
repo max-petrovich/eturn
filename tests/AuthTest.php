@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Maxic\DleAuth\User;
+use App\Models\User;
 
 class AuthTest extends TestCase
 {
@@ -27,7 +27,7 @@ class AuthTest extends TestCase
     {
         $userPassword = 123456;
 
-        $user = factory(Maxic\DleAuth\User::class)
+        $user = factory(User::class)
             ->create([
                 'password' => Maxic\DleAuth\DleCrypt::crypt($userPassword)
             ]);

@@ -66,6 +66,20 @@ return [
             'engine' => null,
         ],
 
+        'mysql_dle' => [
+            'driver' => 'mysql',
+            'host' => env('DB_DLE_HOST', 'localhost'),
+            'port' => env('DB_DLE_PORT', '3306'),
+            'database' => env('DB_DLE_DATABASE', 'forge'),
+            'username' => env('DB_DLE_USERNAME', 'forge'),
+            'password' => env('DB_DLE_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => 'dle_',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', 'localhost'),

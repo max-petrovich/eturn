@@ -20,11 +20,11 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Maxic\DleAuth\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->safeEmail,
-        'password' => Maxic\DleAuth\DleCrypt::crypt(123456),
+        'password' => Maxic\DleAuth\DleCrypt::crypt($faker->password),
         'remember_token' => str_random(10),
     ];
 });

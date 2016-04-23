@@ -7,8 +7,8 @@ return [
     | Default Queue Driver
     |--------------------------------------------------------------------------
     |
-    | The Laravel queue API supports a variety of back-ends via an unified
-    | API, giving you convenient access to each back-end using the same
+    | The Laravel queue Api supports a variety of back-ends via an unified
+    | Api, giving you convenient access to each back-end using the same
     | syntax for each one. Here you may set the default queue driver.
     |
     | Supported: "null", "sync", "database", "beanstalkd",

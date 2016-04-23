@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -158,7 +158,7 @@ return [
 
         Barryvdh\Debugbar\ServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        Spatie\Fractal\FractalServiceProvider::class, // API
+        Spatie\Fractal\FractalServiceProvider::class, // Api
         Collective\Html\HtmlServiceProvider::class,
 
         Maxic\DleAuth\DleAuthServiceProvider::class,

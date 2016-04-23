@@ -14,9 +14,7 @@
 /* Client part */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'MainController@index');
 
 Route::get('/home', 'HomeController@index');
 
@@ -31,5 +29,5 @@ Route::group(['prefix' => 'api/v1'], function () {
 
 });
 
-/* API*/
+/* Api*/
 Route::auth();

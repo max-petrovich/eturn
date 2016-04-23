@@ -11,7 +11,7 @@ class DatabaseCreateModelsTest extends TestCase
 
     public function testCreateUsers()
     {
-        factory(App\Models\User::class, 1)
+        $user = factory(App\Models\User::class)
             ->create();
     }
 
