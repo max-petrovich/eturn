@@ -4,8 +4,6 @@ use Maxic\DleAuth\User as DleUser;
 
 class User extends DleUser
 {
-
-    protected $connection = 'mysql_dle';
     
     public function services()
     {

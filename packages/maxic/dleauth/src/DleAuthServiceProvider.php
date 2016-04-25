@@ -1,6 +1,7 @@
 <?php namespace Maxic\DleAuth;
 
 use Auth;
+use Config;
 use Illuminate\Support\ServiceProvider;
 
 class DleAuthServiceProvider extends ServiceProvider
@@ -11,6 +12,8 @@ class DleAuthServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/dleconfig.php' => config_path('dleconfig.php'),
         ]);
+
+        Config::set('database.connections.' . config('dleconfig.db_connection_name'),config('dleconfig.db_connection'));
 
         Auth::provider('dleauth', function($app, $config) {
             return new EloquentUserProvider($config['model']);

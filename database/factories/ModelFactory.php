@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+$factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->safeEmail,
@@ -31,7 +31,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Service::class, function (Faker\Generator $faker) {
     return [
-        'title' => $faker->unique()->name,
+        'title' => $faker->unique()->sentence(4),
         'description' => $faker->text(200),
     ];
 });

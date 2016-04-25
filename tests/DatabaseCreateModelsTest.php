@@ -6,13 +6,16 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DatabaseCreateModelsTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     public function testCreateUsers()
     {
         $user = factory(App\Models\User::class)
             ->create();
+
+        $this->seeInDatabase($user->getTable(), [
+           'email' => $user->email
+        ], config('dleconfig.db_connection_name'));
     }
 
     public function testCreateServices()

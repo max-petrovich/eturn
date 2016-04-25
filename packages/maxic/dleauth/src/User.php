@@ -24,6 +24,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        
+        $this->connection = config('dleconfig.db_connection_name');
+    }
+
     public function getIdAttribute()
     {
         return $this->attributes['user_id'];

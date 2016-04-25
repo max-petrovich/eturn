@@ -2,6 +2,13 @@
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
+
+    /**
+     * Connections for database transactions
+     * @var array
+     */
+    protected $connectionsToTransact = ['mysql', 'mysql_dle'];
+
     /**
      * The base URL to use while testing the application.
      *
@@ -21,5 +28,14 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    public function tearDown()
+    {
+        $this->beforeApplicationDestroyed(function () {
+            DB::disconnect();
+        });
+
+        parent::tearDown();
     }
 }

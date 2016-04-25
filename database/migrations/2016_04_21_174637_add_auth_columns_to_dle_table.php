@@ -12,7 +12,7 @@ class AddAuthColumnsToDleTable extends Migration
      */
     public function up()
     {
-        Schema::connection(config('dleconfig.database_connection', config('database.default')))->table('dle_users', function (Blueprint $table) {
+        Schema::connection(config('dleconfig.db_connection_name', config('database.default')))->table('users', function (Blueprint $table) {
             $table->string('email', 255)->change();
             $table->string('password', 255)->change();
             $table->string('name', 255)->change();
@@ -20,7 +20,7 @@ class AddAuthColumnsToDleTable extends Migration
             $table->timestamps();
         });
 
-        DB::connection(config('dleconfig.database_connection', config('database.default')))->statement('ALTER TABLE '. config('dleconfig.prefix') .'users ENGINE = InnoDB');
+        DB::connection(config('dleconfig.db_connection_name', config('database.default')))->statement('ALTER TABLE '. config('dleconfig.db_connection.prefix') .'users ENGINE = InnoDB');
     }
 
     /**
@@ -30,7 +30,7 @@ class AddAuthColumnsToDleTable extends Migration
      */
     public function down()
     {
-        Schema::connection(config('dleconfig.database_connection', config('database.default')))->table('dle_users', function (Blueprint $table) {
+        Schema::connection(config('dleconfig.db_connection_name', config('database.default')))->table('users', function (Blueprint $table) {
             $table->string('email', 50)->change();
             $table->string('password', 32)->change();
             $table->string('name', 40)->change();
@@ -38,6 +38,6 @@ class AddAuthColumnsToDleTable extends Migration
             $table->dropTimestamps();
         });
 
-        DB::connection(config('dleconfig.database_connection', config('database.default')))->statement('ALTER TABLE '. config('dleconfig.prefix') .'users ENGINE = MyISAM');
+        DB::connection(config('dleconfig.db_connection_name', config('database.default')))->statement('ALTER TABLE '. config('dleconfig.db_connection.prefix') .'users ENGINE = MyISAM');
     }
 }
