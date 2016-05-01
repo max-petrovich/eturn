@@ -18,6 +18,7 @@ return [
 
     'roles_user' => [
         'admin' => 1,
-        'master' => [3]
+        'master' => 3,
+        'client' => 4
     ],
 ];

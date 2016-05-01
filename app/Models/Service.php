@@ -4,6 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Service
+ * @mixin \Eloquent
+ */
+
 class Service extends Model
 {
     public function users()

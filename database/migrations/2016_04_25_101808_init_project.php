@@ -5,6 +5,9 @@ use Illuminate\Database\Migrations\Migration;
 
 class InitProject extends Migration
 {
+
+    private $dleUserTable = '';
+
     /**
      * Run the migrations.
      *
@@ -12,85 +15,7 @@ class InitProject extends Migration
      */
     public function up()
     {
-        /**
-         * Pivot table for AdditionalService & Order
-         */
-        Schema::create('additional_service_order', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('order_id');
-            $table->integer('additional_service_id');
-            $table->timestamps();
-        });
-
-        /**
-         * Pivot table for AdditionalService & User
-         */
-        Schema::create('additional_service_user', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('additional_service_id');
-            $table->decimal('price',10, 2);
-            $table->integer('duration');
-            $table->timestamps();
-        });
-
-        /**
-         * Additional Services
-         */
-        Schema::create('additional_services', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('service_id');
-            $table->string('title');
-            $table->text('description');
-            $table->timestamps();
-        });
-
-        /**
-         * Canceled Orders - orders that client has canceled
-         */
-        Schema::create('canceled_orders', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('order_id');
-            $table->timestamp('cancellation_time');
-            $table->timestamps();
-        });
-
-        /**
-         * Closed Days - dates in which institution is closed
-         */
-        Schema::create('closed_days', function (Blueprint $table) {
-            $table->date('closed_date')->unique();
-            $table->timestamps();
-        });
-
-        /**
-         * hidden_order_monitoring PIVOT table
-         * TODO description
-         */
-        Schema::create('hidden_order_monitoring', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('order_id');
-            $table->timestamps();
-        });
-
-        /**
-         * Orders
-         */
-        Schema::create('orders', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('client_user_id');
-            $table->integer('master_user_id');
-            $table->integer('service_id');
-            $table->string('client_name');
-            $table->string('client_phone');
-            $table->text('note');
-            $table->integer('payment_type_id');
-            $table->timestamp('visit_datetime');
-            $table->tinyInteger('status');
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        $this->dleUserTable = config('dleconfig.db_connection.database') . '.' . config('dleconfig.db_connection.prefix') . 'users';
 
         /**
          * Payment types
@@ -102,18 +27,6 @@ class InitProject extends Migration
         });
 
         /**
-         * Pivot table for Services & Users
-         */
-        Schema::create('service_user', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('service_id');
-            $table->decimal('price', 10, 2);
-            $table->integer('duration');
-            $table->timestamps();
-        });
-
-        /**
          * Services
          */
         Schema::create('services', function (Blueprint $table) {
@@ -121,6 +34,119 @@ class InitProject extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->timestamps();
+        });
+
+        /**
+         * Additional Services
+         */
+        Schema::create('additional_services', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('service_id')->unsigned();
+            $table->string('title');
+            $table->text('description');
+            $table->timestamps();
+
+            $table->foreign('service_id')->references('id')->on('services');
+        });
+
+        /**
+         * Orders
+         */
+        Schema::create('orders', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('client_user_id')->unsigned();
+            $table->integer('master_user_id')->unsigned();
+            $table->integer('service_id')->unsigned();
+            $table->string('client_name');
+            $table->string('client_phone');
+            $table->text('note');
+            $table->integer('payment_type_id')->unsigned();
+            $table->timestamp('visit_datetime');
+            $table->tinyInteger('status');
+            $table->timestamps();
+            $table->softDeletes();
+
+//            $table->foreign('client_user_id')->references('user_id')->on($this->dleUserTable);
+//            $table->foreign('master_user_id')->references('user_id')->on($this->dleUserTable);
+            $table->foreign('service_id')->references('id')->on('services');
+            $table->foreign('payment_type_id')->references('id')->on('payment_types');
+        });
+
+        /**
+         * Pivot table for AdditionalService & Order
+         */
+        Schema::create('additional_service_order', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('order_id')->unsigned();
+            $table->integer('additional_service_id')->unsigned();
+            $table->timestamps();
+
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('additional_service_id')->references('id')->on('additional_services');
+        });
+
+        /**
+         * Pivot table for AdditionalService & User
+         */
+        Schema::create('additional_service_user', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('additional_service_id')->unsigned();
+            $table->decimal('price',10, 2);
+            $table->integer('duration');
+            $table->timestamps();
+
+//            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
+            $table->foreign('additional_service_id')->references('id')->on('additional_services');
+
+        });
+
+        /**
+         * Canceled Orders - orders that client has canceled
+         */
+        Schema::create('canceled_orders', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('order_id')->unsigned();
+            $table->timestamp('cancellation_time');
+            $table->timestamps();
+
+            $table->foreign('order_id')->references('id')->on('orders');
+        });
+
+        /**
+         * Closed Days - dates in which institution is closed
+         */
+        Schema::create('closed_days', function (Blueprint $table) {
+            $table->date('closed_date')->unique();
+            $table->timestamps();
+        });
+
+        /**
+         * Orders that hidden from monitoring for specified user
+         */
+        Schema::create('order_hidden_users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('order_id')->unsigned();
+            $table->timestamps();
+
+//            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
+            $table->foreign('order_id')->references('id')->on('orders');
+        });
+
+        /**
+         * Pivot table for Services & Users
+         */
+        Schema::create('service_user', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('service_id')->unsigned();
+            $table->decimal('price', 10, 2);
+            $table->integer('duration');
+            $table->timestamps();
+
+//            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
+            $table->foreign('service_id')->references('id')->on('services');
         });
 
         /**
@@ -137,11 +163,13 @@ class InitProject extends Migration
          */
         Schema::create('user_schedule_exceptions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->date('exception_date');
             $table->time('time_start');
             $table->time('time_end');
             $table->timestamps();
+
+//            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
         });
 
         /**
@@ -149,11 +177,13 @@ class InitProject extends Migration
          */
         Schema::create('user_schedules', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->tinyInteger('weekday');
             $table->time('time_start');
             $table->time('time_end');
             $table->timestamps();
+
+//            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
         });
 
     }
@@ -170,7 +200,7 @@ class InitProject extends Migration
         Schema::drop('additional_services');
         Schema::drop('canceled_orders');
         Schema::drop('closed_days');
-        Schema::drop('hidden_order_monitoring');
+        Schema::drop('order_hidden_users');
         Schema::drop('orders');
         Schema::drop('payment_types');
         Schema::drop('service_user');

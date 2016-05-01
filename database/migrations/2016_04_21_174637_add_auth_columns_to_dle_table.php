@@ -13,6 +13,7 @@ class AddAuthColumnsToDleTable extends Migration
     public function up()
     {
         Schema::connection(config('dleconfig.db_connection_name', config('database.default')))->table('users', function (Blueprint $table) {
+            $table->increments('user_id')->change();
             $table->string('email', 255)->change();
             $table->string('password', 255)->change();
             $table->string('name', 255)->change();
@@ -31,6 +32,7 @@ class AddAuthColumnsToDleTable extends Migration
     public function down()
     {
         Schema::connection(config('dleconfig.db_connection_name', config('database.default')))->table('users', function (Blueprint $table) {
+            $table->integer('user_id')->change();
             $table->string('email', 50)->change();
             $table->string('password', 32)->change();
             $table->string('name', 40)->change();

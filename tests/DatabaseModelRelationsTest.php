@@ -3,6 +3,7 @@
 use App\Models\AdditionalService;
 use App\Models\Service;
 use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -11,103 +12,7 @@ class DatabaseTestModelRelations extends TestCase
 {
 
     use DatabaseTransactions;
-
-    public function testOrder()
-    {
-
-        $users = factory(App\Models\User::class, 2)
-            ->create();
-
-        $service = factory(App\Models\Service::class)
-            ->create();
-
-        $paymentType = factory(App\Models\PaymentType::class)
-            ->create();
-
-        $order = factory(App\Models\Order::class)
-            ->create([
-                'client_user_id'  => $users[0]->id,
-                'master_user_id'  => $users[1]->id,
-                'service_id'      => $service->id,
-                'payment_type_id' => $paymentType->id
-            ]);
-
-        $this->assertEquals($users[0]->id, $order->client->id);
-        $this->assertEquals($users[1]->id, $order->master->id);
-        $this->assertEquals($service->id, $order->service->id);
-        $this->assertEquals($paymentType->id, $order->paymentType->id);
-    }
-
-    public function testAdditionalService()
-    {
-        $service = factory(App\Models\Service::class)
-            ->create();
-
-        $additionalService = factory(App\Models\AdditionalService::class)
-            ->create([
-               'service_id' => $service->id
-            ]);
-
-        $this->assertEquals($service->id, $additionalService->service->id);
-
-    }
-
-    public function testCanceledOrder()
-    {
-        $order = factory(App\Models\Order::class)
-            ->create();
-
-        $canceledOrder = factory(App\Models\CanceledOrder::class)
-            ->create([
-                'order_id' => $order->id
-            ]);
-
-        $this->assertEquals($order->id, $canceledOrder->order->id);
-    }
-
-    public function testHiddenOrderMonitoring()
-    {
-        $order = factory(App\Models\Order::class)
-            ->create();
-
-        $user = factory(App\Models\User::class)
-            ->create();
-
-        $hiddenOrderMonitoring = factory(App\Models\HiddenOrderMonitoring::class)
-            ->create([
-                'user_id' => $user->id,
-                'order_id' => $order->id
-            ]);
-
-        $this->assertEquals($user->id, $hiddenOrderMonitoring->user->id);
-        $this->assertEquals($order->id, $hiddenOrderMonitoring->order->id);
-    }
-
-    public function testMasterSchedule()
-    {
-        $user = factory(App\Models\User::class)
-            ->create();
-
-        $masterSchedule = factory(App\Models\UserSchedule::class)
-            ->create([
-                'user_id' => $user->id
-            ]);
-
-        $this->assertEquals($user->id, $masterSchedule->user->id);
-    }
-
-    public function testMasterScheduleException()
-    {
-        $user = factory(App\Models\User::class)
-            ->create();
-
-        $masterScheduleException = factory(App\Models\UserScheduleException::class)
-            ->create([
-               'user_id' => $user->id
-            ]);
-
-        $this->assertEquals($user->id, $masterScheduleException->user->id);
-    }
+    use SoftDeletes;
 
     /**
      * Test user with services, additional services
@@ -136,9 +41,10 @@ class DatabaseTestModelRelations extends TestCase
         // add additional services to user
 
         $additionalServices = factory(App\Models\AdditionalService::class, 5)
-            ->create([
-                'service_id' => $service->id
-            ]);
+            ->make()
+            ->each(function($adService) use ($service) {{
+                $adService->service()->associate($service)->save();
+            }});
 
         $user->additionalServices()->attach($additionalServices, $userServiceData);
 
@@ -146,7 +52,133 @@ class DatabaseTestModelRelations extends TestCase
             $this->assertEquals($userServiceData['price'], $adService->pivot->price);
             $this->assertEquals($userServiceData['duration'], $adService->pivot->duration);
         });
+        
+    }
 
+    /**
+     * Create and delete order.
+     * Associate related models
+     * @throws Exception
+     */
 
+    public function testCreateOrder()
+    {
+        $users = factory(App\Models\User::class, 2)
+            ->create();
+
+        $service = factory(App\Models\Service::class)
+            ->create();
+
+        $additionalServices = factory(App\Models\AdditionalService::class, 3)
+            ->make()
+            ->each(function($adService) use($service) {
+                $service->additionalServices()->save($adService);
+            });
+
+        /**
+         * Attach services to user-master
+         */
+        $client = $users[0];
+        $master = $users[1];
+
+        $master->services()->attach($service, [
+            'price' => 150,
+            'duration' => 30
+        ]);
+
+        /**
+         * Attach additional services to user-master
+         */
+        $master->additionalServices()->attach($additionalServices, [
+            'price' => 200,
+            'duration' => 30,
+        ]);
+
+        /**
+         * Payment types
+         */
+
+        $paymentTypes = factory(App\Models\PaymentType::class,3)
+            ->create();
+
+        $order = new App\Models\Order;
+        $order->client()->associate($client);
+        $order->master()->associate($master);
+        $order->service()->associate($service);
+        $order->paymentType()->associate($paymentTypes->random(1));
+
+        $order->save();
+
+        /**
+         * Attach additional services to order
+         */
+        $order->additionalServices()->saveMany($master->additionalServices()->take(2)->get());
+
+        /**
+         * Soft delete order (order remains in the database, but marked as deleted)
+         */
+
+        $order->delete();
+
+        $this->assertTrue($order->trashed());
+    }
+
+    public function testUserServices()
+    {
+        $service = factory(App\Models\Service::class)
+            ->create();
+
+        $user = factory(App\Models\User::class)
+            ->create([
+                'user_group' => getRoleId('master')
+            ]);
+
+        $user->services()->attach($service);
+    }
+
+    public function testUserAdditionalServices()
+    {
+
+        $services = factory(App\Models\Service::class, 30)
+            ->create()
+            ->each(function(Service $service) {
+                $service->additionalServices()->saveMany(factory(App\Models\AdditionalService::class, 2)->make());
+            });
+
+        $users = factory(App\Models\User::class, 10)
+            ->create([
+                'user_group' => getRoleId('master')
+            ]);
+
+        /**
+         * Attach services and additional services to users
+         */
+
+        User::master()->get()->each(function(User $user) use($services) {
+            $servicesCount = rand(0, $services->count());
+
+            if ($servicesCount > 0) {
+                $user->services()->attach(Service::all()->random($servicesCount), [
+                    'price' => 100,
+                    'duration' => 30
+                ]);
+
+                /**
+                 * Attach additional services to user
+                 */
+                $user->services()->each(function(Service $userService) use($user) {
+                    $userAdditionalServices = $userService->additionalServices()->get();
+                    if ($userAdditionalServices->count() > 0) {
+                        $attachRandomCount = rand(0, $userAdditionalServices->count());
+                        if ($attachRandomCount > 0) {
+                            $user->additionalServices()->attach($userService->additionalServices()->get()->random($attachRandomCount), [
+                                'price' => 100,
+                                'duration' => 30
+                            ]);
+                        }
+                    }
+                });
+            }
+        });
     }
 }
