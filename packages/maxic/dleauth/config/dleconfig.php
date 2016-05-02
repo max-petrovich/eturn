@@ -2,6 +2,7 @@
 
 return [
     'db_connection_name' => 'mysql_dle',
+    'db_prefix' => 'dle_',
     'db_connection' => [
         'driver' => 'mysql',
         'host' => env('DB_DLE_HOST', 'localhost'),
@@ -11,7 +12,7 @@ return [
         'password' => env('DB_DLE_PASSWORD', ''),
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',
-        'prefix' => 'dle_',
+        'prefix' => '',
         'strict' => false,
         'engine' => null,
     ],

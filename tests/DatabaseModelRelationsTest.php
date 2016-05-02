@@ -101,7 +101,7 @@ class DatabaseTestModelRelations extends TestCase
         $paymentTypes = factory(App\Models\PaymentType::class,3)
             ->create();
 
-        $order = new App\Models\Order;
+        $order = factory(App\Models\Order::class)->make();
         $order->client()->associate($client);
         $order->master()->associate($master);
         $order->service()->associate($service);

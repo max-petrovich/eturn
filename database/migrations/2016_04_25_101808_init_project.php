@@ -89,12 +89,14 @@ class InitProject extends Migration
          * Pivot table for AdditionalService & User
          */
         Schema::create('additional_service_user', function (Blueprint $table) {
-            $table->increments('id');
+//            $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('additional_service_id')->unsigned();
             $table->decimal('price',10, 2);
             $table->integer('duration');
             $table->timestamps();
+
+            $table->unique(['user_id', 'additional_service_id']);
 
 //            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
             $table->foreign('additional_service_id')->references('id')->on('additional_services');
@@ -138,12 +140,14 @@ class InitProject extends Migration
          * Pivot table for Services & Users
          */
         Schema::create('service_user', function (Blueprint $table) {
-            $table->increments('id');
+//            $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('service_id')->unsigned();
             $table->decimal('price', 10, 2);
             $table->integer('duration');
             $table->timestamps();
+
+            $table->unique(['user_id', 'service_id']);
 
 //            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
             $table->foreign('service_id')->references('id')->on('services');

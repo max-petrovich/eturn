@@ -28,28 +28,14 @@ class User extends Authenticatable
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        
-        $this->connection = config('dleconfig.db_connection_name');
+
+        $this->table = config('dleconfig.db_prefix') . 'users';
+//        $this->connection = config('dleconfig.db_connection_name');
     }
 
     public function getIdAttribute()
     {
         return $this->attributes['user_id'];
-    }
-
-    public function isAdmin()
-    {
-        return in_array($this->user_group, (array)config('dleconfig.roles_user.admin'));
-    }
-
-    public function isMaster()
-    {
-        return in_array($this->user_group, (array)config('dleconfig.roles_user.master'));
-    }
-
-    public function isClient()
-    {
-        return !$this->isMaster();
     }
 
 }

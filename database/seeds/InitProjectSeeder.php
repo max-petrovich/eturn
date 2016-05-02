@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\AdditionalService;
+use App\Models\Order;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -94,13 +96,6 @@ class InitProjectSeeder extends Seeder
          * Associate services and additional services with masters
          */
 
-        User::master()->get()->each(function(User $user) use($services, $serviceSimpleData) {
-            $user->services()->attach($services->random(1), [
-                'price' => $serviceSimpleData['price'][array_rand($serviceSimpleData['price'])],
-                'duration' => $serviceSimpleData['duration'][array_rand($serviceSimpleData['duration'])]
-            ]);
-        });
-
         User::master()->get()->each(function(User $user) use($serviceSimpleData) {
             $servicesCount = rand(0, Service::count());
 
@@ -129,12 +124,34 @@ class InitProjectSeeder extends Seeder
         });
 
 
-
-        // -------------------- LAST
-
         /**
          * Orders
          */
+
+
+        $orders = factory(App\Models\Order::class, 20)
+            ->make()
+            ->each(function(Order $order){
+                $master = User::master()->has('services')->get()->random(1);
+                $order->client()->associate(User::client()->get()->random(1));
+                $order->master()->associate($master);
+                $order->service()->associate($master->services->random(1));
+                $order->paymentType()->associate(App\Models\PaymentType::all()->random(1));
+                $order->save();
+            });
+
+        // Attach additional services to orders
+        $randomOrders = $orders->random(13);
+
+        $randomOrders->each(function(Order $order) {
+            $orderServiceAdditionalServices = $order->service->additionalServices;
+            if ($orderServiceAdditionalServices->count()) {
+                $orderServiceAdditionalServices->random(rand(1,$orderServiceAdditionalServices->count()))
+                    ->each(function(AdditionalService $additionalService) use($order) {
+                        $order->additionalServices()->attach($additionalService);
+                    });
+            }
+        });
 
 
     }
