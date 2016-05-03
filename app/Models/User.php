@@ -9,6 +9,8 @@ use Maxic\DleAuth\User as DleUser;
 
 class User extends DleUser
 {
+
+    protected $fillable = ['email', 'name', 'password', 'fullname'];
     
     public function services()
     {
@@ -61,5 +63,25 @@ class User extends DleUser
     public function scopeClient($query)
     {
         return $query->where('user_group', config('dleconfig.roles_user.client'));
+    }
+
+    public function hasRole($roleName)
+    {
+        return $this->user_group === getRoleId($roleName);
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isMaster()
+    {
+        return $this->hasRole('master');
+    }
+
+    public function isClient()
+    {
+        return $this->hasRole('client');
     }
 }

@@ -24,8 +24,14 @@
             margin-right: 6px;
         }
     </style>
+    {{ Html::style('css/styles.css') }}
+    <!-- Angular -->
+    {{ Html::script('app/lib/angular/angular.min.js') }}
+    {{ Html::script('app/lib/angular/angular-route.min.js') }}
+    {{ Html::script('app/app.js') }}
 </head>
 <body id="app-layout">
+
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
@@ -40,14 +46,13 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Laravel
+                    Eturn
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -55,7 +60,6 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -77,6 +81,6 @@
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+    {{-- <script src="{{ elixir('libs/app.libs') }}"></script> --}}
 </body>
 </html>

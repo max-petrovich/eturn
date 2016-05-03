@@ -11,23 +11,34 @@
 |
 */
 
+/* Route collection for auth */
+Route::auth();
+
+
 /* Client part */
+Route::get('/', 'BookingController@index');
+Route::resource('booking', 'BookingController');
 
-
-Route::get('/', 'MainController@index');
-
-Route::get('/home', 'HomeController@index');
 
 /* Admin part */
-
 Route::group(['prefix' => 'admin', 'as' => 'admin', 'namespace' => 'Admin'], function() {
-    
 });
-
-Route::group(['prefix' => 'api/v1'], function () {
-
-
-});
-
 /* Api*/
-Route::auth();
+Route::group(['prefix' => 'api/v1'], function () {
+    Route::get('services', 'Api\ServiceController@services');
+});
+
+/**
+ * Angular routing
+ */
+/**
+ * Angular Templates
+ */
+Route::group(array('prefix'=>'/templates/'),function(){
+    Route::get('{template}', [ function($template)
+        {
+            $template = str_replace(".html","",$template);
+            View::addExtension('html','php');
+            return View::make('angular.'.$template);
+        }]);
+});

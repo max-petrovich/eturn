@@ -154,7 +154,7 @@ class DatabaseTestModelRelations extends TestCase
          * Attach services and additional services to users
          */
 
-        User::master()->get()->each(function(User $user) use($services) {
+        User::master()->doesntHave('services')->get()->each(function(User $user) use($services) {
             $servicesCount = rand(0, $services->count());
 
             if ($servicesCount > 0) {

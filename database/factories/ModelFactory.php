@@ -15,7 +15,7 @@ use Carbon\Carbon;
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
+        'name' => $faker->userName,
         'email' => $faker->safeEmail,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
@@ -24,7 +24,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
+        'name' => $faker->userName,
         'email' => $faker->safeEmail,
         'user_group' => rand(3,4),
         'password' => Maxic\DleAuth\DleCrypt::crypt($faker->password),
@@ -66,7 +66,7 @@ $factory->define(App\Models\Order::class, function (Faker\Generator $faker) {
 //        'service_id' => function() {
 //            return factory(App\Models\Service::class)->create()->id;
 //        },
-        'client_name' => $faker->name,
+        'client_name' => $faker->userName,
         'client_phone' => $faker->phoneNumber,
         'note' => $faker->paragraph(),
 //        'payment_type_id' => function() {

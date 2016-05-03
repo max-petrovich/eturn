@@ -73,7 +73,7 @@ class InitProject extends Migration
         });
 
         /**
-         * Pivot table for AdditionalService & Order
+         * PIVOT table for AdditionalService & Order
          */
         Schema::create('additional_service_order', function (Blueprint $table) {
             $table->increments('id');
@@ -81,12 +81,14 @@ class InitProject extends Migration
             $table->integer('additional_service_id')->unsigned();
             $table->timestamps();
 
+            $table->unique(['order_id', 'additional_service_id']);
+
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('additional_service_id')->references('id')->on('additional_services');
         });
 
         /**
-         * Pivot table for AdditionalService & User
+         * PIVOT table for AdditionalService & User
          */
         Schema::create('additional_service_user', function (Blueprint $table) {
 //            $table->increments('id');
@@ -132,6 +134,7 @@ class InitProject extends Migration
             $table->integer('order_id')->unsigned();
             $table->timestamps();
 
+            $table->unique(['user_id', 'order_id']);
 //            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
             $table->foreign('order_id')->references('id')->on('orders');
         });

@@ -15,7 +15,7 @@ class DatabaseCreateModelsTest extends TestCase
 
         $this->seeInDatabase($user->getTable(), [
            'email' => $user->email
-        ], config('dleconfig.db_connection_name'));
+        ]);
     }
 
     public function testCreateServices()

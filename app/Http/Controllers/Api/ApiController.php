@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-
+use Illuminate\Routing\Controller as BaseController;
 use Response;
 
 class ApiController extends BaseController
@@ -31,7 +31,7 @@ class ApiController extends BaseController
     public function respondNotFound($message = 'Not found')
     {
         return $this->respond([
-            'message' => $this->getStatusCode(),
+            'message' => $message,
         ]);
     }
 

@@ -7,7 +7,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      * Connections for database transactions
      * @var array
      */
-    protected $connectionsToTransact = ['mysql', 'mysql_dle'];
+//    protected $connectionsToTransact = ['mysql', 'mysql_dle'];
 
     /**
      * The base URL to use while testing the application.
