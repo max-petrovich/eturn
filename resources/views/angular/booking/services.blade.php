@@ -8,7 +8,7 @@
                         <div class="list-group">
                                 <li class="list-group-item clearfix" ng-repeat="service in services">
                                     <% service.title %>
-                                    <div class="pull-right"><a href="#/booking/<% service.id %>" class="btn btn-primary">{{ trans('all.to_book') }} <i class="fa fa-shopping-cart"></i></a></div>
+                                    <div class="pull-right"><a href="/booking/<% service.id %>" class="btn btn-primary">{{ trans('all.to_book') }} <i class="fa fa-shopping-cart"></i></a></div>
                                 </li>
                         </div>
                 </div>

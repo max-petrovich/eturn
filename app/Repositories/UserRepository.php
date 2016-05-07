@@ -1,25 +1,17 @@
 <?php namespace App\Repositories;
 
-use App\Models\Service;
+use Illuminate\Database\Eloquent\Collection;
 
-class ServiceRepository implements RepositoryInterface
+class UserRepository implements RepositoryInterface
 {
 
     /**
-     * Get all services, ordered by title
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @param array $columns
+     * @return Collection
      */
     public function all($columns = array('*'))
     {
-        return Service::orderBy('title')->get($columns);
-    }
-
-    /**
-     * Get all services which associated at least with one master
-     */
-    public function hasMasters()
-    {
-        return Service::has('users')->get();
+        // TODO: Implement all() method.
     }
 
     public function paginate($perPage = 15, $columns = array('*'))
@@ -44,11 +36,12 @@ class ServiceRepository implements RepositoryInterface
 
     public function find($id, $columns = array('*'))
     {
-        return Service::find($id, $columns);
+        // TODO: Implement find() method.
     }
 
     public function findBy($field, $value, $columns = array('*'))
     {
         // TODO: Implement findBy() method.
     }
+    
 }

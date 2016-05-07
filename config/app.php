@@ -156,12 +156,15 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        App\Providers\ComposerServiceProvider::class,
+
         Barryvdh\Debugbar\ServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Spatie\Fractal\FractalServiceProvider::class, // Api
         Collective\Html\HtmlServiceProvider::class,
 
-        Maxic\DleAuth\DleAuthServiceProvider::class,
+        Bican\Roles\RolesServiceProvider::class,
+
 
     ],
 

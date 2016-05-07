@@ -5,9 +5,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class InitProject extends Migration
 {
-
-    private $dleUserTable = '';
-
     /**
      * Run the migrations.
      *
@@ -15,8 +12,6 @@ class InitProject extends Migration
      */
     public function up()
     {
-        $this->dleUserTable = config('dleconfig.db_connection.database') . '.' . config('dleconfig.db_connection.prefix') . 'users';
-
         /**
          * Payment types
          */
@@ -193,6 +188,16 @@ class InitProject extends Migration
 //            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
         });
 
+        Schema::create('user_data', function (Blueprint $table){
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->string('key');
+            $table->string('value');
+            $table->timestamps();
+
+            $table->index('user_id');
+        });
+
     }
 
     /**
@@ -215,6 +220,6 @@ class InitProject extends Migration
         Schema::drop('system_settings');
         Schema::drop('user_schedule_exceptions');
         Schema::drop('user_schedules');
-
+        Schema::drop('user_data');
     }
 }

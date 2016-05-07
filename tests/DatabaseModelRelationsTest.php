@@ -3,6 +3,7 @@
 use App\Models\AdditionalService;
 use App\Models\Service;
 use App\Models\User;
+use Bican\Roles\Models\Role;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -129,9 +130,9 @@ class DatabaseTestModelRelations extends TestCase
             ->create();
 
         $user = factory(App\Models\User::class)
-            ->create([
-                'user_group' => getRoleId('master')
-            ]);
+            ->create();
+
+        $user->attachRole(Role::find(3));
 
         $user->services()->attach($service);
     }
@@ -146,15 +147,17 @@ class DatabaseTestModelRelations extends TestCase
             });
 
         $users = factory(App\Models\User::class, 10)
-            ->create([
-                'user_group' => getRoleId('master')
-            ]);
+            ->create()
+            ->each(function ($user){
+                $user->attachRole(Role::find(3));
+            });
+
 
         /**
          * Attach services and additional services to users
          */
 
-        User::master()->doesntHave('services')->get()->each(function(User $user) use($services) {
+        User::role('master')->doesntHave('services')->get()->each(function(User $user) use($services) {
             $servicesCount = rand(0, $services->count());
 
             if ($servicesCount > 0) {

@@ -27,8 +27,8 @@
     {{ Html::style('css/styles.css') }}
     <!-- Angular -->
     {{ Html::script('app/lib/angular/angular.min.js') }}
-    {{ Html::script('app/lib/angular/angular-route.min.js') }}
     {{ Html::script('app/app.js') }}
+    <base href="/">
 </head>
 <body id="app-layout">
 
@@ -46,7 +46,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Eturn
+                    {{ trans('all.site_title') }}
                 </a>
             </div>
 
@@ -60,6 +60,7 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
+                        <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -76,6 +77,10 @@
         </div>
     </nav>
 
+    @include('partials.errors')
+    @if(isset($steps))
+        @include('booking.partials.steps')
+    @endif
     @yield('content')
 
     <!-- JavaScripts -->

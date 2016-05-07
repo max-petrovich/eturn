@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0f5148558ab82d6729ca1e088c103bee",
-    "content-hash": "b7b308121a18ed9971b0f6e1a8cd295e",
+    "hash": "5bb12caf4f1c1a5cb03368715fc07aa0",
+    "content-hash": "19faeaf6abf8866bce60eaeb9827c583",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -60,6 +60,51 @@
                 "webprofiler"
             ],
             "time": "2016-02-17 08:32:21"
+        },
+        {
+            "name": "bican/roles",
+            "version": "2.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/romanbican/roles.git",
+                "reference": "582349795ef0af9ff1a64bb2c1b884bbd5ab7c98"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/romanbican/roles/zipball/582349795ef0af9ff1a64bb2c1b884bbd5ab7c98",
+                "reference": "582349795ef0af9ff1a64bb2c1b884bbd5ab7c98",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Bican\\Roles": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roman Bičan",
+                    "email": "romanbican@seznam.cz"
+                }
+            ],
+            "description": "Powerful package for handling roles and permissions in Laravel 5.",
+            "keywords": [
+                "acl",
+                "auth",
+                "illuminate",
+                "laravel",
+                "permissions",
+                "roles"
+            ],
+            "time": "2015-07-30 10:00:12"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -3341,16 +3386,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "1.3.5",
+            "version": "1.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "dc7a29032cf72b54f36dac15a1ca5b3a1b6029bf"
+                "reference": "2292b116f43c272ff4328083096114f84ea46a56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/dc7a29032cf72b54f36dac15a1ca5b3a1b6029bf",
-                "reference": "dc7a29032cf72b54f36dac15a1ca5b3a1b6029bf",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/2292b116f43c272ff4328083096114f84ea46a56",
+                "reference": "2292b116f43c272ff4328083096114f84ea46a56",
                 "shasum": ""
             },
             "require": {
@@ -3387,7 +3432,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-02-26 18:40:46"
+            "time": "2016-05-04 07:59:13"
         },
         {
             "name": "sebastian/exporter",

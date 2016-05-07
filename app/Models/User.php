@@ -1,17 +1,38 @@
-<?php namespace App\Models;
+<?php
 
-use Maxic\DleAuth\User as DleUser;
+namespace App\Models;
 
-/**
- * Class User
- * @mixin \Eloquent
- */
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Bican\Roles\Traits\HasRoleAndPermission;
+use Bican\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
-class User extends DleUser
+class User extends Authenticatable implements HasRoleAndPermissionContract
 {
+    use HasRoleAndPermission;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'email', 'password',
+    ];
 
-    protected $fillable = ['email', 'name', 'password', 'fullname'];
-    
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    public function data()
+    {
+        return $this->hasMany('App\Models\UserData');
+    }
+
     public function services()
     {
         return $this->belongsToMany('App\Models\Service')
@@ -45,43 +66,48 @@ class User extends DleUser
     {
         return $this->hasMany('App\Models\UserHiddenOrder');
     }
-    
+
     /**
      * Scopes
      */
 
-    public function scopeMaster($query)
+    /**
+     * Scope a query select user by role Id
+     * @param $role int|string
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRole(EloquentBuilder $query, $role)
     {
-        return $query->where('user_group', config('dleconfig.roles_user.master'));
+        return $query->whereHas('roles', function (EloquentBuilder $q) use($role) {
+            if (is_string($role)) {
+                $q->whereSlug($role);
+            } else {
+                $q->whereRoleId($role);
+            }
+        });
     }
 
-    public function scopeAdmin($query)
+    /**
+     * @param $key string
+     * @return string|int
+     */
+    public function getData($key)
     {
-        return $query->where('user_group', config('dleconfig.roles_user.admin'));
+        return $this->data()->whereKey($key)->first()->value;
     }
 
-    public function scopeClient($query)
+    /**
+     * Accessors & Mutators
+     */
+
+    public function getFioAttribute()
     {
-        return $query->where('user_group', config('dleconfig.roles_user.client'));
+        return $this->attributes['name'];
     }
 
-    public function hasRole($roleName)
+    public function setFioAttribute($value)
     {
-        return $this->user_group === getRoleId($roleName);
+        $this->attributes['name'] = $value;
     }
-
-    public function isAdmin()
-    {
-        return $this->hasRole('admin');
-    }
-
-    public function isMaster()
-    {
-        return $this->hasRole('master');
-    }
-
-    public function isClient()
-    {
-        return $this->hasRole('client');
-    }
+    
 }

@@ -4,9 +4,10 @@ use App\Models\AdditionalService;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\User;
+use Bican\Roles\Models\Role;
 use Illuminate\Database\Seeder;
 
-class InitProjectSeeder extends Seeder
+class TestData extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,15 +16,45 @@ class InitProjectSeeder extends Seeder
      */
     public function run()
     {
+
+
         /**
-         * Seed users.
-         * Before - delete all NON admin users
+         * Create users
          */
-        User::where('user_group', '!=', 1)->delete();
+        $user = factory(App\Models\User::class)
+            ->create([
+                'name' => 'Maxic',
+                'email' => 'unrelaxby@gmail.com'
+            ]);
 
-        factory(App\Models\User::class, 30)
-            ->create();
+        $user->attachRole(Role::where('slug', 'admin')->first());
 
+        /**
+         * Create 10 masters
+         */
+        $masterRole = Role::where('slug', 'master')->first();
+        factory(App\Models\User::class, 10)
+            ->create()
+            ->each(function ($user) use($masterRole){
+                $user->attachRole($masterRole);
+                $user->data()->save(new App\Models\UserData(['key' => 'minimum_service_duration', 'value' => 60]));
+            });
+
+        /**
+         * Create 20 client
+         */
+        $clientRole = Role::where('slug', 'client')->first();
+
+        factory(App\Models\User::class, 20)
+            ->create()
+            ->each(function ($user) use($clientRole){
+                $user->attachRole($clientRole);
+            });
+
+
+        /**
+         * Create services
+         */
 
         $services = factory(App\Models\Service::class, 30)
             ->create();
@@ -33,9 +64,6 @@ class InitProjectSeeder extends Seeder
             ->each(function($adService) use($services) {
                 $adService->service()->associate($services->random(1))->save();
             });
-
-        $paymentTypes = factory(App\Models\PaymentType::class, 3)
-            ->create();
 
         $closedDays = factory(App\Models\ClosedDay::class, 5)
             ->create();
@@ -49,16 +77,9 @@ class InitProjectSeeder extends Seeder
          * Get client user
          * Get or create master user
          */
-        $clients = App\Models\User::client()->get();
+        $clients = App\Models\User::role('client')->get();
 
-        $masters = App\Models\User::master()->get();
-
-        if (!$masters->count()) {
-            $masters = factory(App\Models\User::class)
-                ->create([
-                    'user_group' => config('dleconfig.roles_user.master')
-                ]);
-        }
+        $masters = App\Models\User::role('master')->get();
 
         /**
          * Masters Schedule
@@ -96,7 +117,7 @@ class InitProjectSeeder extends Seeder
          * Associate services and additional services with masters
          */
 
-        User::master()->get()->each(function(User $user) use($serviceSimpleData) {
+        User::role('master')->get()->each(function(User $user) use($serviceSimpleData) {
             $servicesCount = rand(0, Service::count());
 
             if ($servicesCount > 0) {
@@ -111,13 +132,10 @@ class InitProjectSeeder extends Seeder
                 $user->services()->each(function(Service $userService) use($user, $serviceSimpleData) {
                     $userAdditionalServices = $userService->additionalServices()->get();
                     if ($userAdditionalServices->count() > 0) {
-                        $attachRandomCount = rand(0, $userAdditionalServices->count());
-                        if ($attachRandomCount > 0) {
-                            $user->additionalServices()->attach($userService->additionalServices()->get()->random($attachRandomCount), [
-                                'price' => $serviceSimpleData['price'][array_rand($serviceSimpleData['price'])],
-                                'duration' => $serviceSimpleData['duration'][array_rand($serviceSimpleData['duration'])]
-                            ]);
-                        }
+                        $user->additionalServices()->attach($userService->additionalServices, [
+                            'price' => $serviceSimpleData['price'][array_rand($serviceSimpleData['price'])],
+                            'duration' => $serviceSimpleData['duration'][array_rand($serviceSimpleData['duration'])]
+                        ]);
                     }
                 });
             }
@@ -132,8 +150,8 @@ class InitProjectSeeder extends Seeder
         $orders = factory(App\Models\Order::class, 20)
             ->make()
             ->each(function(Order $order){
-                $master = User::master()->has('services')->get()->random(1);
-                $order->client()->associate(User::client()->get()->random(1));
+                $master = User::role('master')->has('services')->get()->random(1);
+                $order->client()->associate(User::role('client')->get()->random(1));
                 $order->master()->associate($master);
                 $order->service()->associate($master->services->random(1));
                 $order->paymentType()->associate(App\Models\PaymentType::all()->random(1));

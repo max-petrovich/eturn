@@ -28,9 +28,7 @@ class AuthTest extends TestCase
         $userPassword = 123456;
 
         $user = factory(User::class)
-            ->create([
-                'password' => Maxic\DleAuth\DleCrypt::crypt($userPassword)
-            ]);
+            ->create();
 
         $this->visit('/login')
             ->submitForm('Login', [

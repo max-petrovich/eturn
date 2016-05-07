@@ -14,6 +14,7 @@
         <CLASSES>
           <root url="file://$MODULE_DIR$/vendor/barryvdh/laravel-debugbar" />
           <root url="file://$MODULE_DIR$/vendor/barryvdh/laravel-ide-helper" />
+          <root url="file://$MODULE_DIR$/vendor/bican/roles" />
           <root url="file://$MODULE_DIR$/vendor/classpreloader/classpreloader" />
           <root url="file://$MODULE_DIR$/vendor/composer" />
           <root url="file://$MODULE_DIR$/vendor/dnoegel/php-xdg-base-dir" />
@@ -83,6 +84,7 @@
         <SOURCES>
           <root url="file://$MODULE_DIR$/vendor/barryvdh/laravel-debugbar" />
           <root url="file://$MODULE_DIR$/vendor/barryvdh/laravel-ide-helper" />
+          <root url="file://$MODULE_DIR$/vendor/bican/roles" />
           <root url="file://$MODULE_DIR$/vendor/classpreloader/classpreloader" />
           <root url="file://$MODULE_DIR$/vendor/composer" />
           <root url="file://$MODULE_DIR$/vendor/dnoegel/php-xdg-base-dir" />

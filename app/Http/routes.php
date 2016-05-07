@@ -14,27 +14,28 @@
 /* Route collection for auth */
 Route::auth();
 
-
 /* Client part */
-Route::get('/', 'BookingController@index');
-Route::resource('booking', 'BookingController');
+Route::get('/', ['as' => 'booking', 'uses' => 'BookingController@index']);
+
+Route::group(['middleware' => ['auth','bookingSteps'] ], function() {
+    Route::resource('booking.aservices', 'BookingAdditionalService', ['only' => ['index', 'store']]);
+    Route::resource('booking.aservices.master', 'BookingMaster', ['only' => ['index']]);
+    Route::resource('booking.aservices.master.date', 'BookingVisitDate', ['only' => 'index']);
+});
 
 
 /* Admin part */
 Route::group(['prefix' => 'admin', 'as' => 'admin', 'namespace' => 'Admin'], function() {
 });
 /* Api*/
-Route::group(['prefix' => 'api/v1'], function () {
+Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {
     Route::get('services', 'Api\ServiceController@services');
 });
 
 /**
- * Angular routing
- */
-/**
  * Angular Templates
  */
-Route::group(array('prefix'=>'/templates/'),function(){
+Route::group(['prefix'=>'/templates/'],function(){
     Route::get('{template}', [ function($template)
         {
             $template = str_replace(".html","",$template);

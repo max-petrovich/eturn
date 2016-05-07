@@ -38,4 +38,22 @@ class User extends Authenticatable
         return $this->attributes['user_id'];
     }
 
+    public function setIdAttribute($value){
+        $this->attributes['user_id'] = $value;
+    }
+
+    public function getFioAttribute()
+    {
+        if (empty($this->attributes['fullname'])) {
+            return $this->attributes['name'];
+        }
+
+        return $this->attributes['fullname'];
+    }
+
+    public function setFioAttribute($value)
+    {
+        $this->attributes['fullname'] = $value;
+    }
+
 }

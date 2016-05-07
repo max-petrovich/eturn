@@ -23,11 +23,11 @@ var app = angular.module('booking', ['additionalServiceService'], function($inte
 
 app.controller('BookingController', function($scope,$http, API_URL, AdditionalService){
     $scope.data = [];
-    $scope.additionalServices = [];
+    $scope.services = [];
 
     AdditionalService.get()
         .success(function(response) {
-            $scope.additionalServices = response.data;
+            $scope.services = response.data;
         });
     /* Get all services */
     // $http.get(API_URL + "services")

@@ -13,12 +13,12 @@
 
 use Carbon\Carbon;
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+
+$factory->define(App\Models\Role::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->userName,
-        'email' => $faker->safeEmail,
-        'password' => bcrypt(str_random(10)),
-        'remember_token' => str_random(10),
+        'display_name' => $faker->name,
+        'description' => $faker->text(),
     ];
 });
 
@@ -26,11 +26,21 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->userName,
         'email' => $faker->safeEmail,
-        'user_group' => rand(3,4),
-        'password' => Maxic\DleAuth\DleCrypt::crypt($faker->password),
+        'password' => bcrypt(123456),
         'remember_token' => str_random(10),
     ];
 });
+
+/*$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->userName,
+        'email' => $faker->safeEmail,
+        'user_group' => rand(3,4),
+        'fullname' => $faker->name,
+        'password' => Maxic\DleAuth\DleCrypt::crypt($faker->password),
+        'remember_token' => str_random(10),
+    ];
+});*/
 
 $factory->define(App\Models\Service::class, function (Faker\Generator $faker) {
     return [
