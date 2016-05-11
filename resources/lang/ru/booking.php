@@ -5,7 +5,7 @@ return [
     'additional_services_choice' => 'Выбор дополнительных услуг',
     'master_choice' => 'Выбор исполнителя',
     'date_choice' => 'Выбор даты',
-    'payment_choice' => 'Выбор оплаты',
+    'payment_choice' => 'Выбор способа оплаты',
     'service' => 'Услуга',
     'additional_services' => 'Дополнительные услуги',
     'master' => 'Мастер',

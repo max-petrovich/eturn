@@ -21,6 +21,7 @@ Route::group(['middleware' => ['auth','bookingSteps'] ], function() {
     Route::resource('booking.aservices', 'BookingAdditionalService', ['only' => ['index', 'store']]);
     Route::resource('booking.aservices.master', 'BookingMaster', ['only' => ['index']]);
     Route::resource('booking.aservices.master.date', 'BookingVisitDate', ['only' => 'index']);
+    Route::resource('booking.aservices.master.date.payment', 'BookingPayment', ['only' => 'index']);
 });
 
 

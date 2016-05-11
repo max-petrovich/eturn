@@ -36,7 +36,7 @@
                                 <h4 class="col-md-3 text-right"><% intervals.price %> р.</h4>
                             </div>
                             <div ng-repeat="interval in intervals.intervals" class="row">
-                                <h4><a ng-href="booking/<% service %>/aservices/<% aservices %>/master/<% intervals.master.id %>/date/<% dt | date:'yyyy-MM-dd' %>,<% interval[0] %>"><% interval[0] %> - <% interval[1] %></a></h4>
+                                <h4><a ng-href="booking/<% service %>/aservices/<% aservices %>/master/<% intervals.master.id %>/date/<% dt | date:'yyyy-MM-dd' %>,<% interval[0] %>/payment"><% interval[0] %> - <% interval[1] %></a></h4>
                             </div>
                         </div>
                     </div>
