@@ -7,6 +7,11 @@ use Bican\Roles\Traits\HasRoleAndPermission;
 use Bican\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
+/**
+ * Class User
+ * @mixin \Eloquent
+ */
+
 class User extends Authenticatable implements HasRoleAndPermissionContract
 {
     use HasRoleAndPermission;
@@ -47,9 +52,14 @@ class User extends Authenticatable implements HasRoleAndPermissionContract
             ->withTimestamps();
     }
 
-    public function orders()
+    public function clientOrders()
     {
-        $this->hasMany('App\Models\Order');
+        return $this->hasMany('App\Models\Order', 'client_user_id');
+    }
+
+    public function masterOrders()
+    {
+        return $this->hasMany('App\Models\Order', 'master_user_id');
     }
 
     public function schedule()
@@ -108,6 +118,12 @@ class User extends Authenticatable implements HasRoleAndPermissionContract
     public function setFioAttribute($value)
     {
         $this->attributes['name'] = $value;
+    }
+
+    public function getPhotoLinkAttribute()
+    {
+        // TODO Заменить после добавления профиля пользователя
+        return asset('storage/images/users/no-user-image.gif');
     }
     
 }

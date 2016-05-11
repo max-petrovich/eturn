@@ -59,7 +59,7 @@ $factory->define(App\Models\AdditionalService::class, function (Faker\Generator 
     ];
 });
 
-$factory->define(App\Models\ClosedDay::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\ClosedDate::class, function (Faker\Generator $faker) {
     return [
         'closed_date' => $faker->unique()->date
     ];
@@ -82,7 +82,8 @@ $factory->define(App\Models\Order::class, function (Faker\Generator $faker) {
 //        'payment_type_id' => function() {
 //            return factory(App\Models\PaymentType::class)->create()->id;
 //        },
-        'visit_datetime' => $faker->dateTime,
+        'visit_start' => $faker->dateTime,
+        'visit_end' => $faker->dateTime,
         'status' => $faker->numberBetween(0,10)
     ];
 });

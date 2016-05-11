@@ -1,10 +1,21 @@
 // SERVICES
-angular.module('additionalServiceService', [])
+angular.module('closedDateService', [])
 
-    .factory('AdditionalService', function($http, API_URL) {
+    .factory('ClosedDates', function($http, API_URL) {
         return {
             get : function() {
-                return $http.get(API_URL + 'services');
+                return $http.get(API_URL + 'closedDate/all');
+            }
+        }
+    });
+
+
+angular.module('bookingService', [])
+
+    .factory('Booking', function($http, API_URL) {
+        return {
+            getAvailableIntervals : function(date, master, service, additionalServices) {
+                return $http.get(API_URL + 'booking/getAvailableIntervals/' + date + '/' + master + '/' + service + '/' + additionalServices);
             }
         }
     });
@@ -13,7 +24,7 @@ angular.module('additionalServiceService', [])
 // create our angular app and inject ngAnimate and ui-router
 // ===========================================
 
-var app = angular.module('booking', ['additionalServiceService'], function($interpolateProvider) {
+var app = angular.module('booking', ['ui.bootstrap', 'closedDateService', 'bookingService'], function($interpolateProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
     })
@@ -21,17 +32,65 @@ var app = angular.module('booking', ['additionalServiceService'], function($inte
 
 // ALL CONTROLLERS
 
-app.controller('BookingController', function($scope,$http, API_URL, AdditionalService){
-    $scope.data = [];
-    $scope.services = [];
+app.controller('BookingVisitDateController', function($scope, API_URL, ClosedDates, Booking){
 
-    AdditionalService.get()
+    $scope.showNoIntervalsMsg = false;
+    $scope.availableIntervals = undefined;
+
+    // get closed dates
+    ClosedDates.get()
         .success(function(response) {
-            $scope.services = response.data;
+            $scope.disabledDates = response.data;
         });
-    /* Get all services */
-    // $http.get(API_URL + "services")
-    //     .success(function(response) {
-    //         $scope.services = response.data;
-    //     });
+
+    $scope.inlineOptions = {
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date().setMonth(new Date().getMonth() + 3),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    $scope.$watch("dt", function(newValue, oldValue) {
+
+        if ($scope.dt == undefined) {
+            $scope.availableIntervals = undefined;
+            $scope.showNoIntervalsMsg = false;
+        } else {
+            Booking.getAvailableIntervals(moment($scope.dt).format('YYYY-MM-DD'), $scope.master, $scope.service, $scope.aservices)
+                .success(function(response) {
+                    $scope.availableIntervals = response.data;
+                    $scope.showNoIntervalsMsg = false;
+                })
+                .error(function(response, status) {
+                    if (status == 404) {
+                        $scope.showNoIntervalsMsg = true;
+                    }
+                });
+        }
+    });
+
+    // Disable closed dates
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+
+        if (mode === 'day' && $scope.disabledDates.length && $scope.disabledDates.indexOf(moment(date).format('YYYY-MM-DD')) !== -1) {
+            return true;
+        }
+    }
+
+    $scope.openVisitDate = function() {
+        $scope.visitDate.opened = true;
+    };
+
+    $scope.visitDate = {
+        opened: false
+    };
+
 });

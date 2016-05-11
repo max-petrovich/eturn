@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(EssentialData::class);
-        $this->call(TestData::class);
+//        $this->call(TestData::class);
+        $this->call(RealData::class);
     }
 }

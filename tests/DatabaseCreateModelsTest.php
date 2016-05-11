@@ -37,7 +37,7 @@ class DatabaseCreateModelsTest extends TestCase
 
     public function testCreateClosedDays()
     {
-        factory(App\Models\ClosedDay::class, 2)
+        factory(App\Models\ClosedDate::class, 2)
             ->create();
     }
 
@@ -93,11 +93,15 @@ class DatabaseCreateModelsTest extends TestCase
         $user = factory(App\Models\User::class)
             ->create();
 
-        factory(App\Models\UserSchedule::class, 7)
-            ->make()
-            ->each(function($userSchedule) use($user) {
-                $userSchedule->user()->associate($user)->save();
-            });
+        $weekday = 0;
+
+        $userSchedule = factory(App\Models\UserSchedule::class, 7)
+            ->make();
+
+        foreach ($userSchedule as $schedule) {
+            $schedule->weekday = $weekday++;
+            $schedule->user()->associate($user)->save();
+        }
 
         $this->assertEquals(7, $user->schedule->count());
     }
@@ -107,13 +111,12 @@ class DatabaseCreateModelsTest extends TestCase
         $user = factory(App\Models\User::class)
             ->create();
 
-        factory(App\Models\UserScheduleException::class, 7)
-            ->make()
-            ->each(function($userScheduleException) use($user) {
-                $userScheduleException->user()->associate($user)->save();
-            });
+        $userScheduleException = factory(App\Models\UserScheduleException::class)
+            ->make();
 
-        $this->assertEquals(7, $user->scheduleException->count());
+        $userScheduleException->user()->associate($user)->save();
+
+        $this->assertEquals(1, $user->scheduleException->count());
     }
 
     public function testCreateSystemSettings()

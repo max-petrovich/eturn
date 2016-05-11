@@ -56,16 +56,31 @@ class CheckBookingSteps
              */
             if ($route->hasParameter('aservices')) {
 
-                $additionalServicesIds = with( new BookingService)->getAdditionalServicesIdFromInput();
+                $additionalServicesIds = with(new BookingService)->getAdditionalServicesIdFromInput();
 
                 if (is_null($additionalServicesIds)) {
                     throw new ModelNotFoundException();
                 }
-                
-                if ($additionalServicesIds->count() > 1 || $additionalServicesIds->first() != 0) {
-                    if ($service->additionalServices->whereIn('id', $additionalServicesIds->toArray())->count() !== $additionalServicesIds->count()) {
+
+                // Get additional services to service
+                $serviceAdditionalServices = $service->additionalServices;
+
+                if ($serviceAdditionalServices->count()) {
+                    if ($additionalServicesIds->count() > 1 && $additionalServicesIds->contains(0)) {
                         throw new ModelNotFoundException();
                     }
+
+                    /**
+                     * Check for existing input service ids in real service additional services array
+                     */
+
+                    if (!$additionalServicesIds->contains(0) &&
+                            $additionalServicesIds->intersect($serviceAdditionalServices->pluck('id'))->count() != $additionalServicesIds->count()) {
+                        throw new ModelNotFoundException();
+                    }
+                } else {
+                    app()->make('BookingSteps')->setNotActive('aservices');
+
                 }
             }
 

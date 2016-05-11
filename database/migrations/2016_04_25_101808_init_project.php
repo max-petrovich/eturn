@@ -56,7 +56,8 @@ class InitProject extends Migration
             $table->string('client_phone');
             $table->text('note');
             $table->integer('payment_type_id')->unsigned();
-            $table->timestamp('visit_datetime');
+            $table->dateTime('visit_start');
+            $table->dateTime('visit_end');
             $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();
@@ -115,8 +116,9 @@ class InitProject extends Migration
         /**
          * Closed Days - dates in which institution is closed
          */
-        Schema::create('closed_days', function (Blueprint $table) {
+        Schema::create('closed_dates', function (Blueprint $table) {
             $table->date('closed_date')->unique();
+            $table->primary('closed_date');
             $table->timestamps();
         });
 
@@ -167,9 +169,12 @@ class InitProject extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->date('exception_date');
-            $table->time('time_start');
-            $table->time('time_end');
+            $table->time('time_start')->nullable();
+            $table->time('time_end')->nullable();
             $table->timestamps();
+
+            $table->unique(['user_id', 'exception_date']);
+
 
 //            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
         });
@@ -184,6 +189,8 @@ class InitProject extends Migration
             $table->time('time_start');
             $table->time('time_end');
             $table->timestamps();
+
+            $table->unique(['user_id', 'weekday']);
 
 //            $table->foreign('user_id')->references('user_id')->on($this->dleUserTable);
         });
@@ -211,7 +218,7 @@ class InitProject extends Migration
         Schema::drop('additional_service_user');
         Schema::drop('additional_services');
         Schema::drop('canceled_orders');
-        Schema::drop('closed_days');
+        Schema::drop('closed_dates');
         Schema::drop('order_hidden_users');
         Schema::drop('orders');
         Schema::drop('payment_types');

@@ -17,7 +17,6 @@ class TestData extends Seeder
     public function run()
     {
 
-
         /**
          * Create users
          */
@@ -65,7 +64,7 @@ class TestData extends Seeder
                 $adService->service()->associate($services->random(1))->save();
             });
 
-        $closedDays = factory(App\Models\ClosedDay::class, 5)
+        $closedDays = factory(App\Models\ClosedDate::class, 5)
             ->create();
 
         $systemSettings = factory(App\Models\SystemSettings::class, 10)
@@ -75,7 +74,7 @@ class TestData extends Seeder
 
         /**
          * Get client user
-         * Get or create master user
+         * Get master user
          */
         $clients = App\Models\User::role('client')->get();
 

@@ -3,7 +3,7 @@
 use App\Models\AdditionalService;
 use App\Models\Service;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class Procedure
 {
@@ -52,29 +52,5 @@ class Procedure
     {
         $this->additionalServices = $additionalServices;
     }
-
-    /**
-     * @return int
-     */
-    public function getDurationForMaster(User $master)
-    {
-        $duration = 0;
-
-        $userService = $master->services()->whereId($this->service->id)->first();
-        $duration += $userService->pivot->duration;
-
-        // If additional services isset - add duration
-        if (!is_null($this->additionalServices) && $this->additionalServices->count()) {
-            $additionalServices = $master->additionalServices()->whereIn('additional_service_id', $this->additionalServices->pluck('id')->toArray())->get();
-
-            foreach ($additionalServices as $aService) {
-                $duration += $aService->pivot->duration;
-            }
-        }
-
-        return $duration;
-    }
-
-
 
 }

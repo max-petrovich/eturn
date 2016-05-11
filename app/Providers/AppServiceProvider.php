@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Entities\BookingSteps;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->singleton('BookingSteps', function ($app) {
+            return new BookingSteps();
+        });
     }
 
     /**

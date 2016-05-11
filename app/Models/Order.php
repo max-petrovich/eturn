@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -16,7 +17,7 @@ class Order extends Model
 
     protected $fillable = ['client_name', 'client_phone'];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at', 'visit_start', 'visit_end'];
 
     public function client()
     {
@@ -52,6 +53,29 @@ class Order extends Model
     public function hiddenUser()
     {
         return $this->hasMany('App\Models\OrderHiddenUser');
+    }
+
+    /**
+     * Scopes
+     */
+
+    public function scopeDate($query, $date)
+    {
+        $date = Carbon::parse($date);
+        $query->whereDay('visit_start', '=', $date->day);
+        $query->whereMonth('visit_start', '=', $date->month);
+        $query->whereYear('visit_start', '=', $date->year);
+
+        return $query;
+    }
+
+    /**
+     * Helpers
+     */
+
+    public function getProcedureDuration()
+    {
+        return Carbon::parse($this->attributes['visit_end'])->diffInMinutes(Carbon::parse($this->attributes['visit_start']));
     }
 
 }

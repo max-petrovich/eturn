@@ -20,5 +20,6 @@ return [
     'steps_master' => 'Мастер',
     'steps_date' => 'Дата',
     'steps_payment' => 'Способ оплаты',
-    'steps_confirm' => 'Подтверждение'
+    'steps_confirm' => 'Подтверждение',
+    'select_the_date_of_the_visit' => 'Выберите дату посещения',
 ];

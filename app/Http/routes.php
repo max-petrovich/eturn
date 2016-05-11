@@ -28,8 +28,13 @@ Route::group(['middleware' => ['auth','bookingSteps'] ], function() {
 Route::group(['prefix' => 'admin', 'as' => 'admin', 'namespace' => 'Admin'], function() {
 });
 /* Api*/
-Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {
-    Route::get('services', 'Api\ServiceController@services');
+Route::group(['prefix' => 'api/v1', 'middleware' => 'api', 'namespace' => 'Api'], function () {
+
+    Route::get('closedDate/all', 'ClosedDateController@all');
+
+    Route::group(['prefix' => 'booking'], function (){
+        Route::get('getAvailableIntervals/{date}/{masterId}/{serviceId}/{additionalServicesIds}', 'BookingVisitDateController@getAvailableIntervals');
+    });
 });
 
 /**

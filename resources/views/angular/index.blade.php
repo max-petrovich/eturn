@@ -1,7 +1,0 @@
-@extends('layouts.app')
-
-@section('content')
-    <div class="container">
-        <ng-view></ng-view>
-    </div>
-@endsection

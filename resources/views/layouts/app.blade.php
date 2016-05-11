@@ -26,11 +26,12 @@
     </style>
     {{ Html::style('css/styles.css') }}
     <!-- Angular -->
-    {{ Html::script('app/lib/angular/angular.min.js') }}
+    {{ Html::script('assets/bower/angular/angular.min.js') }}
+    {{ Html::script('app/lib/angular/ui-bootstrap-tpls-1.3.2.min.js') }}
     {{ Html::script('app/app.js') }}
     <base href="/">
 </head>
-<body id="app-layout">
+<body id="app-layout" ng-app="booking">
 
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
@@ -86,6 +87,7 @@
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    @stack('scripts')
     {{-- <script src="{{ elixir('libs/app.libs') }}"></script> --}}
 </body>
 </html>
