@@ -39,7 +39,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/', 'AdminController@index');
     Route::get('/orders', 'OrdersController@index')->name('admin.orders');
     Route::resource('/closedDates', 'ClosedDateController', ['except' => ['show', 'update']]);
-    Route::resource('/services', 'ServiceController');
+    Route::resource('/services', 'ServiceController', ['except' => ['show']]);
 });
 
 /**
