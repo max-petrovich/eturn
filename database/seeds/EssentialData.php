@@ -35,8 +35,8 @@ class EssentialData extends Seeder
          * Payments methods
          */
 
-        factory(App\Models\PaymentType::class)->create(['title' => trans('payment.credit_card')]);
-        factory(App\Models\PaymentType::class)->create(['title' => trans('payment.bank_card')]);
-        factory(App\Models\PaymentType::class)->create(['title' => trans('payment.cash')]);
+        factory(App\Models\PaymentType::class)->create(['title' => trans('payment.credit_card'), 'name' => 'credit_card']);
+        factory(App\Models\PaymentType::class)->create(['title' => trans('payment.bank_card'), 'name' => 'bank_card']);
+        factory(App\Models\PaymentType::class)->create(['title' => trans('payment.cash'), 'name' => 'cash']);
     }
 }

@@ -1,6 +1,7 @@
 <?php namespace App\Services;
 
 use App\Entities\Procedure;
+use App\Models\AdditionalService;
 use App\Models\ClosedDate;
 use App\Models\Order;
 use App\Models\User;
@@ -17,7 +18,7 @@ class BookingService
      * @param $masters Collection
      * @param $procedure \App\Entities\Procedure
      * @param $date string
-     * @return array|null
+     * @return Collection|null
      */
     public function getAvailableIntervals(Collection $masters, Procedure $procedure, Carbon $date)
     {
@@ -43,7 +44,7 @@ class BookingService
             // ================================
             $availableIntervals = collect();
 
-            $masterMinimumServiceDuration = $master->getData('minimum_service_duration');
+            $masterMinimumServiceDuration = $master->data->minimum_service_duration;
 
             /**
              * Correct schedule for every master at that $date
@@ -66,6 +67,12 @@ class BookingService
                 /**
                  * Generate all possible time intervals for this master
                  */
+                // Correct time start, if date == current date, according to current time
+                if ($date->isToday() && Carbon::parse($masterSchedule->time_start) < Carbon::now()) {
+                    $masterSchedule->time_start = Carbon::now()->addMinutes($masterMinimumServiceDuration);
+                    $masterSchedule->time_start->subMinutes($masterSchedule->time_start->minute % $masterMinimumServiceDuration);
+                    $masterSchedule->time_start->second(0);
+                }
                 $possibleIntervals = $this->createTimeIntervals($masterSchedule->time_start, $masterSchedule->time_end, $masterMinimumServiceDuration);
                 /**
                  * CHECK if any intervals are employed (have order)
@@ -170,6 +177,26 @@ class BookingService
      * @param $date string
      * @param $time string
      */
+    public function isVisitDateAvailable(User $master, Procedure $procedure, Carbon $visitDate)
+    {
+        $masters = collect([$master]);
+        $availableIntervalsInfo = $this->getAvailableIntervals($masters, $procedure, $visitDate);
+
+        if (!is_null($availableIntervalsInfo) && $availableIntervalsInfo->count()) {
+            $availableIntervals = collect($availableIntervalsInfo->first()['intervals']);
+            $visitStart = $visitDate->toTimeString();
+
+            $searchedIntervals = $availableIntervals->filter(function ($value, $key) use($visitStart) {
+                return $value[0] == $visitStart;
+            });
+
+            if ($searchedIntervals->count() == 1) {
+                return true;
+            }
+
+        }
+        return false;
+    }
 
 
     /**
@@ -194,6 +221,15 @@ class BookingService
         });
 
         return $additionalServicesIds;
+    }
+
+    public function getAdditionalServicesFromInput($paramName = 'aservices', $idDelimeter = '-')
+    {
+        $ids = $this->getAdditionalServicesIdFromInput($paramName, $idDelimeter);
+        if (!$ids->search(0)) {
+            return AdditionalService::whereIn('id', $ids->toArray())->get();
+        }
+        return null;
     }
 
     /**

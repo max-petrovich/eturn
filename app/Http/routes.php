@@ -15,24 +15,41 @@
 Route::auth();
 
 /* Client part */
-Route::get('/', ['as' => 'booking', 'uses' => 'BookingController@index']);
-
-Route::group(['middleware' => ['auth','bookingSteps'] ], function() {
+Route::get('/', 'BookingController@index')->name('booking');
+// Booking
+Route::group(['middleware' => ['bookingSteps'] ], function() {
     Route::resource('booking.aservices', 'BookingAdditionalService', ['only' => ['index', 'store']]);
     Route::resource('booking.aservices.master', 'BookingMaster', ['only' => ['index']]);
     Route::resource('booking.aservices.master.date', 'BookingVisitDate', ['only' => 'index']);
-    Route::resource('booking.aservices.master.date.payment', 'BookingPayment', ['only' => 'index']);
+    Route::group(['middleware' => ['auth']], function (){
+        Route::resource('booking.aservices.master.date.payment', 'BookingPayment', ['only' => 'index']);
+        Route::resource('booking.aservices.master.date.payment.confirm', 'BookingConfirm', ['only' => ['index', 'store']]);
+    });
 });
 
+Route::get('monitoring', 'MonitoringController@index')->name('monitoring');
+Route::resource('profile', 'ProfileController');
 
-/* Admin part */
-Route::group(['prefix' => 'admin', 'as' => 'admin', 'namespace' => 'Admin'], function() {
+/**
+ * ========
+ * ADMIN
+ * ========
+ */
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'role:admin']], function() {
+    Route::get('/', 'AdminController@index');
+    Route::get('/orders', 'OrdersController@index')->name('admin.orders');
+    Route::resource('/closedDates', 'ClosedDateController', ['except' => ['show', 'update']]);
+    Route::resource('/services', 'ServiceController');
 });
-/* Api*/
+
+/**
+ * =======
+ * API
+ * =======
+ */
 Route::group(['prefix' => 'api/v1', 'middleware' => 'api', 'namespace' => 'Api'], function () {
-
     Route::get('closedDate/all', 'ClosedDateController@all');
-
+    Route::get('monitoring', 'MonitoringController@get');
     Route::group(['prefix' => 'booking'], function (){
         Route::get('getAvailableIntervals/{date}/{masterId}/{serviceId}/{additionalServicesIds}', 'BookingVisitDateController@getAvailableIntervals');
     });

@@ -18,6 +18,7 @@ class InitProject extends Migration
         Schema::create('payment_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
+            $table->string('name')->unique();
             $table->timestamps();
         });
 
@@ -62,6 +63,7 @@ class InitProject extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->unique(['visit_start', 'visit_end']);
 //            $table->foreign('client_user_id')->references('user_id')->on($this->dleUserTable);
 //            $table->foreign('master_user_id')->references('user_id')->on($this->dleUserTable);
             $table->foreign('service_id')->references('id')->on('services');
@@ -196,13 +198,15 @@ class InitProject extends Migration
         });
 
         Schema::create('user_data', function (Blueprint $table){
-            $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('key');
-            $table->string('value');
-            $table->timestamps();
+            $table->primary('user_id');
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
 
-            $table->index('user_id');
+            $table->string('minimum_service_duration')->nullable();
+
+            $table->timestamps();
         });
 
     }

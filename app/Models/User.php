@@ -21,7 +21,7 @@ class User extends Authenticatable implements HasRoleAndPermissionContract
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'fio', 'phone'
     ];
 
     /**
@@ -35,7 +35,7 @@ class User extends Authenticatable implements HasRoleAndPermissionContract
 
     public function data()
     {
-        return $this->hasMany('App\Models\UserData');
+        return $this->hasOne('App\Models\UserData');
     }
 
     public function services()
@@ -98,15 +98,6 @@ class User extends Authenticatable implements HasRoleAndPermissionContract
     }
 
     /**
-     * @param $key string
-     * @return string|int
-     */
-    public function getData($key)
-    {
-        return $this->data()->whereKey($key)->first()->value;
-    }
-
-    /**
      * Accessors & Mutators
      */
 
@@ -122,7 +113,9 @@ class User extends Authenticatable implements HasRoleAndPermissionContract
 
     public function getPhotoLinkAttribute()
     {
-        // TODO Заменить после добавления профиля пользователя
+        if ($this->attributes['photo']) {
+            return asset('storage/images/users/' . $this->attributes['photo']);
+        }
         return asset('storage/images/users/no-user-image.gif');
     }
     

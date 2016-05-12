@@ -2,10 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Entities\Procedure;
+use App\Models\PaymentType;
 use App\Models\Service;
+use App\Models\User;
 use App\Repositories\AdditionalServiceRepository;
 use App\Repositories\ServiceRepository;
 use App\Services\BookingService;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -19,11 +23,16 @@ class CheckBookingSteps
      * @var AdditionalServiceRepository
      */
     private $additionalService;
+    /**
+     * @var BookingService
+     */
+    private $bookingService;
 
-    public function __construct(ServiceRepository $services, AdditionalServiceRepository $additionalService)
+    public function __construct(ServiceRepository $services, AdditionalServiceRepository $additionalService, BookingService $bookingService)
     {
         $this->services = $services;
         $this->additionalService = $additionalService;
+        $this->bookingService = $bookingService;
     }
     /**
      * Handle an incoming request.
@@ -66,7 +75,7 @@ class CheckBookingSteps
                 $serviceAdditionalServices = $service->additionalServices;
 
                 if ($serviceAdditionalServices->count()) {
-                    if ($additionalServicesIds->count() > 1 && $additionalServicesIds->contains(0)) {
+                    if ($additionalServicesIds->count() > 1 && $additionalServicesIds->search(0)) {
                         throw new ModelNotFoundException();
                     }
 
@@ -80,7 +89,6 @@ class CheckBookingSteps
                     }
                 } else {
                     app()->make('BookingSteps')->setNotActive('aservices');
-
                 }
             }
 
@@ -90,13 +98,61 @@ class CheckBookingSteps
             if ($route->hasParameter('master')) {
                 $masterId = $route->getParameter('master');
                 if ($masterId > 0 && !$route->hasParameter('date')) {
-                    // Пока ничего не нужно
+                    $master = User::role('master')->find($masterId);
+
+                    if (!$master) {
+                        throw new ModelNotFoundException();
+                    }
+                }
+                elseif ($masterId == 0 && $route->hasParameter('date')) {
+                    throw new ModelNotFoundException();
                 }
             }
 
+            /**
+             * Visit date
+             */
+
+            if ($route->hasParameter('date')) {
+                try {
+                    $date = Carbon::parse($route->getParameter('date'));
+                } catch (\Exception $e) {
+                    throw new ModelNotFoundException();
+                }
+
+                // Check date
+                if ($date < Carbon::now()) {
+                    throw new ModelNotFoundException();
+                }
+
+                // Check date employed
+
+                $procedure = new Procedure($service);
+                if (isset($additionalServicesIds) && $additionalServicesIds->count()) {
+                    $procedure->setAdditionalServices(
+                        $this->bookingService->getAdditionalServicesFromInput()
+                    );
+                }
+
+                $master = User::find($masterId);
+
+                if (!$this->bookingService->isVisitDateAvailable($master, $procedure, $date)) {
+                    // Date is employed
+                    return redirect('/')->withErrors(trans('booking.chosen_date_is_not_available_to_book'));
+                }
+            }
+
+            /**
+             * Payment type
+             */
+            if ($route->hasParameter('payment')) {
+                if (!PaymentType::find($route->getParameter('payment'))) {
+                    throw new ModelNotFoundException();
+                }
+            }
 
         } catch (ModelNotFoundException $e) {
-            return redirect('/')->withErrors(trans('booking.These_reservations_are_outdated_Try_again'));
+            return redirect('/')->withErrors(trans('booking.these_reservations_are_outdated_try_again'));
         }
 
         return $next($request);

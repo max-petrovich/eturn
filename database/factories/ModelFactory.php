@@ -110,7 +110,8 @@ $factory->define(App\Models\OrderHiddenUser::class, function (Faker\Generator $f
 
 $factory->define(App\Models\PaymentType::class, function (Faker\Generator $faker) {
     return [
-        'title' => $faker->unique()->name
+        'title' => $faker->unique()->name,
+        'name'  => $faker->unique()->name
     ];
 });
 

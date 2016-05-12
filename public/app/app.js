@@ -94,3 +94,44 @@ app.controller('BookingVisitDateController', function($scope, API_URL, ClosedDat
     };
 
 });
+
+app.controller('AdminClosedDatesController', function($scope, API_URL, ClosedDates){
+
+    // get closed dates
+    ClosedDates.get()
+        .success(function(response) {
+            $scope.disabledDates = response.data;
+        });
+
+    $scope.inlineOptions = {
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date().setMonth(new Date().getMonth() + 3),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    // Disable closed dates
+    function disabled(data) {
+        var date = data.date,
+            mode = data.mode;
+
+        if (mode === 'day' && $scope.disabledDates.length && $scope.disabledDates.indexOf(moment(date).format('YYYY-MM-DD')) !== -1) {
+            return true;
+        }
+    }
+
+    $scope.openDatepicker = function() {
+        $scope.datepicker.opened = true;
+    };
+
+    $scope.datepicker = {
+        opened: false
+    };
+
+});

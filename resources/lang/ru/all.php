@@ -14,4 +14,11 @@ return [
     'continue' => 'Продолжить',
     'irrelevant' => 'Не имеет значения',
     'close' => 'Закрыть',
+    'abbreviation_hour' => 'ч',
+    'note' => 'Примечание',
+    'your_name' => 'Ваше имя',
+    'your_phone_number' => 'Ваш номер телефона',
+    'monitoring' => 'Мониторинг',
+    'rub' => 'р.',
+    'add' => 'Добавить',
 ];

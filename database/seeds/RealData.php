@@ -31,6 +31,8 @@ class RealData extends Seeder
                 'email' => 'unrelaxby@gmail.com'
             ]);
 
+        $user->data()->create([]);
+
         $user->attachRole(Role::where('slug', 'admin')->first());
 
         /**
@@ -42,8 +44,21 @@ class RealData extends Seeder
             ->create()
             ->each(function ($user) use($masterRole){
                 $user->attachRole($masterRole);
-                $user->data()->save(new App\Models\UserData(['key' => 'minimum_service_duration', 'value' => collect([30,60])->random(1)]));
+                $user->data()->save(new App\Models\UserData(['minimum_service_duration' => collect([30,60])->random(1)]));
             });
+
+        /**
+         * Create test master
+         */
+
+        $testMaster = factory(User::class)
+            ->create([
+                'name' => 'Максим Мастерович',
+                'email' => 'xsoft@mail.by'
+            ]);
+
+        $testMaster->data()->create([]);
+        $testMaster->attachRole(Role::where('slug', 'master')->first());
 
         /**
          * Create 20 client
@@ -54,6 +69,7 @@ class RealData extends Seeder
             ->create()
             ->each(function ($user) use($clientRole){
                 $user->attachRole($clientRole);
+                $user->data()->create([]);
             });
 
         /**

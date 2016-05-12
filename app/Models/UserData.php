@@ -9,8 +9,10 @@ class UserData extends Model
 
     protected $table = 'user_data';
 
+    public $primaryKey = 'user_id';
+
     protected $fillable = [
-        'key', 'value',
+        'minimum_service_duration',
     ];
 
     public function user()

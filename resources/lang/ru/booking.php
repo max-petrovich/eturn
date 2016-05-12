@@ -14,7 +14,7 @@ return [
     'payment_method' => 'Способ оплаты',
     'service_not_exists' => 'Выбранная услуга не существует',
     'perhaps_it_was_removed_from_the_base' => 'Возможно она была удалена из базы данных',
-    'These_reservations_are_outdated_Try_again' => 'Данные бронирования устарели. Попробуйте заново',
+    'these_reservations_are_outdated_try_again' => 'Данные бронирования устарели. Попробуйте заново',
     'steps_booking' => 'Услуга',
     'steps_aservices' => 'Дополнительные услуги',
     'steps_master' => 'Мастер',
@@ -22,4 +22,6 @@ return [
     'steps_payment' => 'Способ оплаты',
     'steps_confirm' => 'Подтверждение',
     'select_the_date_of_the_visit' => 'Выберите дату посещения',
+    'date_of_visit' => 'Дата посещения',
+    'chosen_date_is_not_available_to_book' => 'Выбранная дата и время недоступны для бронирования',
 ];

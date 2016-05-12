@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'login' => 'Войти',
+    'register' => 'Регистрация',
+    'logout' => 'Выход',
+    'profile' => 'Профиль',
+    'edit_profile' => 'Редактирование профиля',
+    'fio' => 'ФИО',
+    'name' => 'Имя',
+    'photo' => 'Фотография',
+    'save' => 'Сохранить',
+    'phone' => 'Телефон',
+    'profile_updated' => 'Профиль обновлён',
+    'personal_information' => 'Личная информация',
+    'email' => 'Email',
+    'password' => 'Пароль',
+    'confirm_password' => 'Повторите пароль',
+    'to_register' => 'Зарегистрироваться',
+    'remember_me' => 'Запомнить меня',
+    'forgot_password' => 'Забыли пароль',
+    'master_information' => 'Информация мастера',
+    'minimum_service_duration' => 'Минимальное время процедуры',
+    'admin_panel' => 'Админ-панель',
+];

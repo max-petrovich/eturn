@@ -15,7 +15,7 @@ class Order extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['client_name', 'client_phone'];
+    protected $fillable = ['client_name', 'client_phone', 'note'];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at', 'visit_start', 'visit_end'];
 
@@ -67,6 +67,11 @@ class Order extends Model
         $query->whereYear('visit_start', '=', $date->year);
 
         return $query;
+    }
+
+    public function scopeEagerLoadAll($query)
+    {
+        return $query->with('client', 'master', 'service', 'additionalServices', 'paymentType');
     }
 
     /**

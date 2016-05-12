@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>{{ $pageTitle or  trans('all.site_title') }}</title>
 
     <!-- Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+    {{ Html::style('assets/bower/components-font-awesome/css/font-awesome.min.css') }}
+
     <link href="//fonts.googleapis.com/css?family=Open+Sans" rel='stylesheet' type='text/css'>
 
     <!-- Styles -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
+    {{ Html::style('css/app.css') }}
 
     <style>
         body {
@@ -54,14 +54,15 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
+                    <li><a href="{{ route('monitoring') }}">{{ trans('all.monitoring') }}</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+                        <li><a href="{{ url('/login') }}">{{ trans('user.login') }}</a></li>
+                        <li><a href="{{ url('/register') }}">{{ trans('user.register') }}</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -69,7 +70,11 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                                @if(Auth::user()->is('admin'))
+                                    <li><a href="{{ url('/admin') }}" target="_blank"><i class="fa fa-btn fa-user"></i>{{ trans('user.admin_panel') }}</a></li>
+                                @endif
+                                <li><a href="{{ url('/profile') }}"><i class="fa fa-btn fa-user"></i>{{ trans('user.profile') }}</a></li>
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>{{ trans('user.logout') }}</a></li>
                             </ul>
                         </li>
                     @endif
@@ -79,15 +84,15 @@
     </nav>
 
     @include('partials.errors')
+    @include('booking.partials.message')
     @if(isset($steps))
         @include('booking.partials.steps')
     @endif
     @yield('content')
 
     <!-- JavaScripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
     @stack('scripts')
-    {{-- <script src="{{ elixir('libs/app.libs') }}"></script> --}}
+    {{ Html::script('js/app.js') }}
 </body>
 </html>

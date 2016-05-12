@@ -15,5 +15,7 @@ class ClosedDate extends Model
 
     public $incrementing = false;
 
+    protected $fillable = ['closed_date'];
+
     protected $dates = ['created_at', 'updated_at', 'closed_date'];
 }
