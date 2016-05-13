@@ -62,6 +62,7 @@ app.controller('BookingVisitDateController', function($scope, API_URL, ClosedDat
             $scope.availableIntervals = undefined;
             $scope.showNoIntervalsMsg = false;
         } else {
+            $scope.availableIntervals = undefined;
             Booking.getAvailableIntervals(moment($scope.dt).format('YYYY-MM-DD'), $scope.master, $scope.service, $scope.aservices)
                 .success(function(response) {
                     $scope.availableIntervals = response.data;
@@ -124,6 +125,43 @@ app.controller('AdminClosedDatesController', function($scope, API_URL, ClosedDat
         if (mode === 'day' && $scope.disabledDates.length && $scope.disabledDates.indexOf(moment(date).format('YYYY-MM-DD')) !== -1) {
             return true;
         }
+    }
+
+    $scope.openDatepicker = function() {
+        $scope.datepicker.opened = true;
+    };
+
+    $scope.datepicker = {
+        opened: false
+    };
+
+});
+
+app.controller('DatepickerController', function($scope){
+
+
+    $scope.inlineOptions = {
+        minDate: new Date(),
+        showWeeks: true
+    };
+
+    $scope.dateOptions = {
+        dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date().setMonth(new Date().getMonth() + 3),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    // Disable closed dates
+    function disabled(data) {
+        // var date = data.date,
+        //     mode = data.mode;
+        //
+        // if (mode === 'day' && $scope.disabledDates.length && $scope.disabledDates.indexOf(moment(date).format('YYYY-MM-DD')) !== -1) {
+        //     return true;
+        // }
+        return false;
     }
 
     $scope.openDatepicker = function() {

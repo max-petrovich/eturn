@@ -38,8 +38,10 @@ Route::resource('profile', 'ProfileController');
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'role:admin']], function() {
     Route::get('/', 'AdminController@index');
     Route::get('/orders', 'OrdersController@index')->name('admin.orders');
-    Route::resource('/closedDates', 'ClosedDateController', ['except' => ['show', 'update']]);
-    Route::resource('/services', 'ServiceController', ['except' => ['show']]);
+    Route::resource('closedDates', 'ClosedDateController', ['except' => ['show', 'update']]);
+    Route::resource('services', 'ServiceController', ['except' => ['show']]);
+    Route::resource('userSchedule', 'UserScheduleController', ['only' => ['index', 'edit', 'update']]);
+    Route::resource('userSchedule.exceptions', 'UserScheduleExceptionController', ['only' => ['create', 'store', 'destroy']]);
 });
 
 /**

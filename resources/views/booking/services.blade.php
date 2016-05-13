@@ -13,7 +13,7 @@
                                 @foreach($services as $service)
                                     <li class="list-group-item clearfix">
                                         {{ $service->title }}
-                                        <div class="pull-right"><a href="{{ route('booking.aservices.index', $service->id) }}" class="btn btn-primary">{{ trans('all.to_book') }} <i class="fa fa-shopping-cart"></i></a></div>
+                                        <div class="pull-right"><a href="{{ route('booking.aservices.index', $service->id) }}" class="btn btn-primary btn-sm">{{ trans('all.to_book') }} <i class="fa fa-shopping-cart"></i></a></div>
                                     </li>
                                 @endforeach
                             </div>

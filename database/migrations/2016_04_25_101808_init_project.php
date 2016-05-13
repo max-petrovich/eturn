@@ -188,8 +188,8 @@ class InitProject extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->tinyInteger('weekday');
-            $table->time('time_start');
-            $table->time('time_end');
+            $table->time('time_start')->nullable();
+            $table->time('time_end')->nullable();
             $table->timestamps();
 
             $table->unique(['user_id', 'weekday']);

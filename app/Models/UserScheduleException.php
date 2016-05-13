@@ -13,6 +13,8 @@ class UserScheduleException extends Model
 {
     protected $dates = ['created_at', 'updated_at', 'exception_date'];
 
+    protected $fillable = ['exception_date', 'time_start', 'time_end'];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');

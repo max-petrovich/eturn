@@ -113,7 +113,7 @@ class User extends Authenticatable implements HasRoleAndPermissionContract
 
     public function getPhotoLinkAttribute()
     {
-        if ($this->attributes['photo']) {
+        if (isset($this->attributes['photo']) && !empty($this->attributes['photo'])) {
             return asset('storage/images/users/' . $this->attributes['photo']);
         }
         return asset('storage/images/users/no-user-image.gif');

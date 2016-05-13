@@ -57,6 +57,7 @@
                 <li><a href="{{ route('admin.orders') }}">{{ trans('admin.orders_list') }}</a></li>
                 <li><a href="{{ route('admin.closedDates.index') }}">{{ trans('admin.closed_date') }}</a></li>
                 <li><a href="{{ route('admin.services.index') }}">{{ trans('admin.services') }}</a></li>
+                <li><a href="{{ route('admin.userSchedule.index') }}">{{ trans('admin.user_schedule') }}</a></li>
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -84,8 +85,7 @@
 @yield('content')
 
 <!-- JavaScripts -->
-
-@stack('scripts')
 {{ Html::script('js/app.js') }}
+@stack('scripts')
 </body>
 </html>

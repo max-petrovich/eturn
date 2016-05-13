@@ -19,7 +19,8 @@
                                         <div class="pull-right">
                                             {{ Form::open(['route' => ['admin.closedDates.destroy', $date->closed_date->toDateString()], 'method' => 'delete']) }}
                                             <button type="submit" class="btn btn-danger btn-xs" title="{{ trans('admin_closedDate.remove_date') }}"><i class="fa fa-remove"></i></button>
-                                            {{ Form::close() }}</div>
+                                            {{ Form::close() }}
+                                        </div>
                                     </li>
                                 @endforeach
                             </div>

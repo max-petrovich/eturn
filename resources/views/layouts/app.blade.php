@@ -91,8 +91,7 @@
     @yield('content')
 
     <!-- JavaScripts -->
-
-    @stack('scripts')
     {{ Html::script('js/app.js') }}
+    @stack('scripts')
 </body>
 </html>

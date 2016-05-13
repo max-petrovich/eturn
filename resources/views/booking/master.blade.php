@@ -12,7 +12,7 @@
                         <div class="row" style="padding:20px 20px 0 20px;">
                         @foreach($masterChunk as $master)
                             <div class="col-md-3">
-                                <img src="{{ asset('storage/images/users/no-user-image.gif') }}" alt="{{ $master->fio }}" class="img-thumbnail">
+                                <img src="{{ $master->photoLink }}" alt="{{ $master->fio }}" class="img-thumbnail">
                                 <div class="text-center" style="margin-top:10px;">{{ link_to_route('booking.aservices.master.date.index', $master->fio, 
                                 array_merge(array_values(Route::current()->parameters()), [$master->id])) }}</div>
                             </div>

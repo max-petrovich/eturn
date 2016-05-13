@@ -54,6 +54,7 @@ class BookingService
             $masterSchedule = $master->schedule()->weekday($date->dayOfWeek)->first();
             // Get schedule exception for that $date
             $masterScheduleException = $master->scheduleException()->date($dateSqlFormat)->first();
+
             if (!is_null($masterScheduleException)) {
                 // Correct schedule
                 $masterSchedule->time_start = $masterScheduleException->time_start;

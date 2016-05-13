@@ -19,7 +19,7 @@
                             <br/>
                             <p class="input-group">
                                 <input type="text" class="form-control" uib-datepicker-popup ng-model="dt" is-open="visitDate.opened"
-                                       datepicker-options="dateOptions" ng-required="true" close-text="{{ trans('all.close') }}" />
+                                       datepicker-options="dateOptions" ng-required="true" placeholder="{{ trans('all.date') }}" close-text="{{ trans('all.close') }}" />
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="openVisitDate()"><i class="fa fa-calendar"></i></button>
                                 </span>
