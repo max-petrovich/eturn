@@ -42,6 +42,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('services', 'ServiceController', ['except' => ['show']]);
     Route::resource('userSchedule', 'UserScheduleController', ['only' => ['index', 'edit', 'update']]);
     Route::resource('userSchedule.exceptions', 'UserScheduleExceptionController', ['only' => ['create', 'store', 'destroy']]);
+    Route::resource('services.additionalServices', 'AdditionalServiceController');
+    Route::resource('services.users', 'ServiceUserController');
+    Route::resource('services.users.additionalService', 'AdditionalServiceUserController');
+    Route::resource('user', 'UserController');
 });
 
 /**

@@ -71,7 +71,7 @@ class InitProject extends Migration
         });
 
         /**
-         * PIVOT table for AdditionalService & Order
+         * PIVOT table for AdditionalServiceController & Order
          */
         Schema::create('additional_service_order', function (Blueprint $table) {
             $table->increments('id');
@@ -86,13 +86,13 @@ class InitProject extends Migration
         });
 
         /**
-         * PIVOT table for AdditionalService & User
+         * PIVOT table for AdditionalServiceController & User
          */
         Schema::create('additional_service_user', function (Blueprint $table) {
 //            $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('additional_service_id')->unsigned();
-            $table->decimal('price',10, 2);
+            $table->integer('price');
             $table->integer('duration');
             $table->timestamps();
 
@@ -145,7 +145,7 @@ class InitProject extends Migration
 //            $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('service_id')->unsigned();
-            $table->decimal('price', 10, 2);
+            $table->integer('price');
             $table->integer('duration');
             $table->timestamps();
 

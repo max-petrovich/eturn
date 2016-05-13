@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class AdditionalService
+ * Class AdditionalServiceController
  * @mixin \Eloquent
  */
 
