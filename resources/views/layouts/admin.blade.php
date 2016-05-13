@@ -54,6 +54,7 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
+                <li><a href="{{ route('admin.users.index') }}">{{ trans('admin.users') }}</a></li>
                 <li><a href="{{ route('admin.orders') }}">{{ trans('admin.orders_list') }}</a></li>
                 <li><a href="{{ route('admin.closedDates.index') }}">{{ trans('admin.closed_date') }}</a></li>
                 <li><a href="{{ route('admin.services.index') }}">{{ trans('admin.services') }}</a></li>

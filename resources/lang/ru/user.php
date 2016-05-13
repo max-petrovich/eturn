@@ -22,4 +22,5 @@ return [
     'master_information' => 'Информация мастера',
     'minimum_service_duration' => 'Минимальное время процедуры',
     'admin_panel' => 'Админ-панель',
+    'make_master' => 'Сделать мастером',
 ];

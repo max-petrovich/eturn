@@ -28,7 +28,9 @@ Route::group(['middleware' => ['bookingSteps'] ], function() {
 });
 
 Route::get('monitoring', 'MonitoringController@index')->name('monitoring');
+
 Route::resource('profile', 'ProfileController');
+Route::put('profile/{user}/makeMaster', 'ProfileController@makeMaster')->name('profile.makeMasters');
 
 /**
  * ========
@@ -37,7 +39,7 @@ Route::resource('profile', 'ProfileController');
  */
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'role:admin']], function() {
     Route::get('/', 'AdminController@index');
-    Route::get('/orders', 'OrdersController@index')->name('admin.orders');
+    Route::get('orders', 'OrdersController@index')->name('admin.orders');
     Route::resource('closedDates', 'ClosedDateController', ['except' => ['show', 'update']]);
     Route::resource('services', 'ServiceController', ['except' => ['show']]);
     Route::resource('userSchedule', 'UserScheduleController', ['only' => ['index', 'edit', 'update']]);
@@ -45,7 +47,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('services.additionalServices', 'AdditionalServiceController');
     Route::resource('services.users', 'ServiceUserController');
     Route::resource('services.users.additionalService', 'AdditionalServiceUserController');
-    Route::resource('user', 'UserController');
+    Route::resource('users', 'UserController');
 });
 
 /**

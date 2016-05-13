@@ -51,7 +51,7 @@
                             </div>
                         </div>
 
-                        @if(Auth::user()->is('master'))
+                        @if(Auth::user()->is(['admin', 'master']))
                             <h3>{{ trans('user.master_information') }}</h3>
                             <hr>
 
@@ -70,6 +70,15 @@
                         {!! Form::submit(trans('user.save'), ['class' => 'btn btn-primary']) !!}
                     </div>
                     {{ Form::close() }}
+                    @if(Auth::user()->is(['admin']))
+                        @if($user->isClient())
+                            <div class="panel-footer text-center">
+                                {{ Form::open(['route' => ['profile.makeMasters', $user->id],'method' => 'PUT']) }}
+                                {{ Form::submit(trans('user.make_master'), ['class' => 'btn btn-danger']) }}
+                                {{ Form::close() }}
+                            </div>
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>

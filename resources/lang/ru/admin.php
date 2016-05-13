@@ -2,6 +2,7 @@
 
 return [
     'admin_title' => 'Админ-панель',
+    'users' => 'Пользователи',
     'orders_list' => 'Список заказов',
     'closed_date' => 'Закрытые дни',
     'services' => 'Услуги',
