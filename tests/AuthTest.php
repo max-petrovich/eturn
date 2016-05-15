@@ -16,7 +16,7 @@ class AuthTest extends TestCase
     public function testAuthFailed()
     {
         $this->visit('/login')
-            ->submitForm('Login', [
+            ->submitForm('Войти', [
                 'email' => 'me@example.com',
                 'password' => 'secret'
             ])
@@ -31,7 +31,7 @@ class AuthTest extends TestCase
             ->create();
 
         $this->visit('/login')
-            ->submitForm('Login', [
+            ->submitForm('Войти', [
                 'email' => $user->email,
                 'password' => $userPassword
             ])

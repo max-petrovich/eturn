@@ -11,11 +11,7 @@ use App\Http\Controllers\Controller;
 
 class UserScheduleExceptionController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create($master_id)
     {
         $master = User::role('master')->findOrFail($master_id);
@@ -26,12 +22,7 @@ class UserScheduleExceptionController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request, $master_id)
     {
         $this->validate($request, [
@@ -58,13 +49,7 @@ class UserScheduleExceptionController extends Controller
         
         return redirect()->route('admin.userSchedule.edit', [$master->id])->with('message', trans('admin_userScheduleException.exception_success_added'));
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($master_id, $exception_id)
     {
         $master = User::findOrFail($master_id);

@@ -10,11 +10,7 @@ use App\Http\Controllers\Controller;
 
 class UserScheduleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $masters = User::role('master')->get();
@@ -25,12 +21,7 @@ class UserScheduleController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $master = User::role('master')->findOrFail($id);
@@ -46,14 +37,7 @@ class UserScheduleController extends Controller
         ]);
 
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
         $master = User::role('master')->findOrFail($id);

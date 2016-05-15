@@ -25,11 +25,7 @@ class BookingAdditionalService extends Controller
         $this->services = $services;
         $this->additionalServices = $additionalServices;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index($service_id)
     {
         $service = $this->services->find($service_id);
@@ -47,12 +43,6 @@ class BookingAdditionalService extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $additionalServices = 0;

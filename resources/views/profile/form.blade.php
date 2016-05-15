@@ -51,7 +51,7 @@
                             </div>
                         </div>
 
-                        @if(Auth::user()->is(['admin', 'master']))
+                        @if(Auth::user()->is(['admin', 'master']) && $user->isMaster())
                             <h3>{{ trans('user.master_information') }}</h3>
                             <hr>
 

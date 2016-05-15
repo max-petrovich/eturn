@@ -18,11 +18,7 @@ class BookingMaster extends Controller
     {
         $this->services = $services;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $masters = $this->services->find(Route::input('booking'))->users;

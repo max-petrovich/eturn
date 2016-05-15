@@ -23,13 +23,7 @@ class ProfileController extends Controller
     {
         return redirect()->route('profile.edit', $request->user()->id);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit(Request $request, $id)
     {
         if ($request->user()->id != $id && !$request->user()->isAdmin()) {
