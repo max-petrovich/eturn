@@ -46,6 +46,10 @@ class BookingService
 
             $masterMinimumServiceDuration = $master->data->minimum_service_duration;
 
+            if ($masterMinimumServiceDuration == 0) {
+                continue;
+            }
+
             /**
              * Correct schedule for every master at that $date
              */

@@ -17,6 +17,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('BookingSteps', function ($app) {
             return new BookingSteps();
         });
+
+        \Debugbar::disable();
     }
 
     /**
